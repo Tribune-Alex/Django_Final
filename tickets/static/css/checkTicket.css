@@ -1,0 +1,504 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style-type: none;
+  text-decoration: none;
+  font-family: main-font;
+}
+
+body {
+  background-color: #f5f6fa;
+}
+
+@font-face {
+  font-family: main-font;
+  src: url(Fonts/Lato/Lato-Regular.ttf);
+}
+@keyframes opacity {
+  0% {
+    background-color: #2841bf;
+  }
+  100% {
+    background-color: rgba(40, 65, 191, 0);
+  }
+}
+main form button {
+  color: #ffffff;
+  background-color: #2841bf;
+  text-align: center;
+  padding: 14px 30px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+}
+
+main {
+  padding: 240px 115px;
+  background-color: #ffffff;
+}
+main form {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+main form div {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 850px;
+  margin: auto;
+}
+main form div input {
+  max-width: 850px;
+  width: 100%;
+  padding: 12px;
+}
+main form button {
+  margin: 0 auto;
+}
+main form button::before {
+  content: "";
+  background-color: #2841bf;
+  position: absolute;
+  inset: 0;
+  transform: scale(0, 1);
+  transform-origin: center;
+  transition: all 0.7s;
+  z-index: -1;
+  border-radius: 5px;
+}
+main form button:hover {
+  animation: opacity 0.7s;
+}
+main form button:hover::before {
+  transform: scale(1, 1);
+}
+main .container {
+  margin: auto;
+  margin-top: 180px;
+  max-width: 1300px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding: 30px;
+  box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.08);
+}
+main .container .payment-status {
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+main .container .payment-status .svg-wrapper {
+  width: 70px;
+  height: 70px;
+  background-color: #008f20;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+main .container .payment-status p {
+  font-size: 30px;
+  font-weight: 600;
+}
+main .container .ticket-wrapper {
+  max-width: 1100px;
+  width: 100%;
+  background-color: rgba(39, 61, 177, 0.03);
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 30px;
+}
+main .container .ticket-wrapper .ticket-info {
+  max-width: 900px;
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+}
+main .container .ticket-wrapper .ticket-info .company-name {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+main .container .ticket-wrapper .ticket-info .company-name p {
+  font-weight: 600;
+}
+main .container .ticket-wrapper .ticket-info .company-name img {
+  width: 70px;
+}
+main .container .ticket-wrapper .ticket-info .ticket-id-date {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+main .container .ticket-wrapper .ticket-info .ticket-id-date p span {
+  font-weight: 600;
+}
+main .container .ticket-wrapper .ticket-info .train-info {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  border: #ebebeb 1px solid;
+  border-radius: 10px;
+  padding: 10px 20px;
+}
+main .container .ticket-wrapper .ticket-info .train-info div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+main .container .ticket-wrapper .ticket-info .contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+main .container .ticket-wrapper .ticket-info .contact-info > p {
+  font-weight: 600;
+}
+main .container .ticket-wrapper .ticket-info .contact-info div {
+  border: 1px solid #ebebeb;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+main .container .ticket-wrapper .ticket-info .contact-info div p {
+  flex-grow: 1;
+  overflow-wrap: anywhere;
+}
+main .container .ticket-wrapper .ticket-info .contact-info div p span {
+  font-weight: 600;
+}
+main .container .ticket-wrapper .ticket-info .passengers-div {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+main .container .ticket-wrapper .ticket-info .passengers-div > p {
+  font-weight: 600;
+}
+main .container .ticket-wrapper .ticket-info .passengers-div .passengers-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+main .container .ticket-wrapper .ticket-info .passengers-div .passengers-info .pass-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  border: 1px solid #ebebeb;
+  padding: 10px;
+  border-radius: 10px;
+}
+main .container .ticket-wrapper .ticket-info .passengers-div .passengers-info .pass-container div {
+  display: flex;
+  gap: 5px;
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+}
+main .container .ticket-wrapper .ticket-info .passengers-div .passengers-info .pass-container div p:nth-child(1) {
+  font-weight: 600;
+}
+main .container .ticket-wrapper .ticket-info .payment-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+main .container .ticket-wrapper .ticket-info .payment-info .total {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-top: 1px solid black;
+  max-width: 300px;
+  width: 100%;
+}
+main .container .ticket-wrapper .ticket-info .payment-info .total p:first-child {
+  font-weight: 600;
+}
+main .container .ticket-wrapper .ticket-info .invoice-copyright {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+}
+main .container .ticket-wrapper .ticket-info .invoice-copyright p {
+  font-weight: 600;
+}
+main .container .ticket-wrapper .ticket-info .invoice-copyright p:nth-child(2) {
+  color: red;
+}
+main .container .ticket-wrapper .print-donwload {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background-color: #fff;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  position: relative;
+}
+main .container .ticket-wrapper .print-donwload div {
+  padding: 5px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+main .container .ticket-wrapper .print-donwload div:hover::before {
+  display: block;
+}
+main .container .ticket-wrapper .print-donwload .print {
+  background-color: rgba(0, 123, 255, 0.3803921569);
+}
+main .container .ticket-wrapper .print-donwload .print::before {
+  content: attr(name);
+  color: #fff;
+  display: none;
+  position: absolute;
+  top: -30px;
+  background-color: rgba(0, 123, 255, 0.3803921569);
+  padding: 5px;
+  border-radius: 4px;
+}
+main .container .ticket-wrapper .print-donwload .download {
+  background-color: rgba(52, 199, 89, 0.3803921569);
+}
+main .container .ticket-wrapper .print-donwload .download::before {
+  content: attr(name);
+  color: #fff;
+  display: none;
+  position: absolute;
+  bottom: -30px;
+  background-color: rgba(52, 199, 89, 0.3803921569);
+  padding: 5px;
+  border-radius: 4px;
+}
+main .container .delete-ticket {
+  width: 250px;
+  height: 40px;
+  background-color: red;
+  text-align: center;
+  color: white;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid black;
+  border-radius: 5px;
+  align-self: flex-start;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  position: relative;
+  cursor: pointer;
+}
+main .container .delete-ticket:hover p::before {
+  visibility: visible;
+  transform: scale(1, 1);
+}
+main .container .delete-ticket p {
+  z-index: 5;
+}
+main .container .delete-ticket p::before {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  inset: 0;
+  transform: scale(0, 1);
+  background-color: #2841bf;
+  visibility: hidden;
+  transition: all 0.5s;
+}
+main .error {
+  max-width: 100%;
+  font-size: 20px;
+  box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  margin-top: 30px;
+  color: #2841bf;
+  display: none;
+}
+
+@media screen and (max-width: 710px) {
+  .container .ticket-wrapper {
+    flex-direction: column-reverse;
+    gap: 20px;
+  }
+  .container .ticket-wrapper .ticket-info {
+    max-width: 100%;
+  }
+  main .container .ticket-wrapper .print-donwload {
+    display: flex;
+    flex-direction: row;
+  }
+}
+@media screen and (max-width: 550px) {
+  .container {
+    padding: 0px;
+  }
+  .container ul {
+    transform: skewX(0deg);
+    border: none;
+  }
+  .container .ticket-wrapper {
+    max-width: 100%;
+  }
+  .container .pass-container {
+    flex-direction: column;
+  }
+}
+@media screen and (max-width: 760px) {
+  main {
+    padding: 240px 10px !important;
+  }
+  main .my-form {
+    width: 100% !important;
+  }
+}
+body.dark-theme {
+  background-color: #121827 !important;
+  color: #e0e0e0 !important;
+  font-family: main-font !important;
+}
+body.dark-theme main form button, main form body.dark-theme button {
+  color: #ffffff;
+  background-color: #3b51e0;
+}
+@keyframes opacity {
+  0% {
+    background-color: #3b51e0;
+  }
+  100% {
+    background-color: rgba(59, 81, 224, 0);
+  }
+}
+body.dark-theme main {
+  background-color: #121827;
+}
+body.dark-theme main form div input {
+  background-color: #1b1f37;
+  border: 1px solid #2841bf;
+  color: #e0e0e0;
+}
+body.dark-theme main form button::before {
+  background-color: #3b51e0;
+}
+body.dark-theme main form button:hover {
+  animation: opacity 0.7s;
+}
+body.dark-theme main form button:hover::before {
+  background-color: #5368f4;
+  transform: scale(1, 1);
+}
+body.dark-theme main .container {
+  background-color: #1b1f37;
+  box-shadow: 0 6px 30px rgba(40, 65, 191, 0.6);
+}
+body.dark-theme main .container .payment-status .svg-wrapper {
+  background-color: #008f20;
+}
+body.dark-theme main .container .payment-status p {
+  color: #e0e0e0;
+}
+body.dark-theme main .container .ticket-wrapper {
+  background-color: rgba(59, 81, 224, 0.05);
+}
+body.dark-theme main .container .ticket-wrapper .ticket-info {
+  background-color: #121827;
+  color: #e0e0e0;
+}
+body.dark-theme main .container .ticket-wrapper .ticket-info .company-name p {
+  color: #e0e0e0;
+}
+body.dark-theme main .container .ticket-wrapper .ticket-info .company-name img {
+  filter: brightness(1) invert(0.8);
+  width: 70px;
+}
+body.dark-theme main .container .ticket-wrapper .ticket-info .ticket-id-date p span,
+body.dark-theme main .container .ticket-wrapper .ticket-info .train-info div,
+body.dark-theme main .container .ticket-wrapper .ticket-info .contact-info div p span,
+body.dark-theme main .container .ticket-wrapper .ticket-info .passengers-div > p,
+body.dark-theme main .container .ticket-wrapper .ticket-info .pass-container div p:nth-child(1),
+body.dark-theme main .container .ticket-wrapper .ticket-info .payment-info .total p:first-child,
+body.dark-theme main .container .ticket-wrapper .ticket-info .invoice-copyright p {
+  color: #ffffff;
+}
+body.dark-theme main .container .ticket-wrapper .ticket-info .ticket-id-date p,
+body.dark-theme main .container .ticket-wrapper .ticket-info .train-info div,
+body.dark-theme main .container .ticket-wrapper .ticket-info .contact-info div p,
+body.dark-theme main .container .ticket-wrapper .ticket-info .pass-container div,
+body.dark-theme main .container .ticket-wrapper .ticket-info .payment-info .total p {
+  color: #e0e0e0;
+}
+body.dark-theme main .container .ticket-wrapper .ticket-info .contact-info > p,
+body.dark-theme main .container .ticket-wrapper .ticket-info .passengers-div > p {
+  color: #c0c0c0;
+}
+body.dark-theme main .container .ticket-wrapper .ticket-info .train-info {
+  border-color: #2841bf;
+}
+body.dark-theme main .container .ticket-wrapper .ticket-info .contact-info div,
+body.dark-theme main .container .ticket-wrapper .ticket-info .pass-container {
+  border-color: #2841bf;
+}
+body.dark-theme main .container .ticket-wrapper .ticket-info .payment-info .total {
+  border-top-color: #5368f4;
+}
+body.dark-theme main .container .ticket-wrapper .print-donwload {
+  background-color: #121827;
+}
+body.dark-theme main .container .ticket-wrapper .print-donwload .print {
+  background-color: rgba(59, 81, 224, 0.3803921569);
+}
+body.dark-theme main .container .ticket-wrapper .print-donwload .print::before {
+  background-color: #3b51e0;
+  color: #ffffff;
+}
+body.dark-theme main .container .ticket-wrapper .print-donwload .download {
+  background-color: rgba(52, 199, 89, 0.3803921569);
+}
+body.dark-theme main .container .ticket-wrapper .print-donwload .download::before {
+  background-color: rgba(52, 199, 89, 0.3803921569);
+  color: #ffffff;
+}
+body.dark-theme main .container .delete-ticket {
+  background-color: #b00020;
+  border: 2px solid #000;
+  color: #ffffff;
+}
+body.dark-theme main .container .delete-ticket p::before {
+  background-color: #3b51e0;
+}
+body.dark-theme main .error {
+  color: #3b51e0;
+  box-shadow: 0 6px 30px rgba(40, 65, 191, 0.6);
+}/*# sourceMappingURL=checkTicket.css.map */

@@ -1,0 +1,568 @@
+.container {
+  margin: auto;
+  margin-top: 250px;
+  max-width: 1300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding: 30px;
+  box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.08);
+}
+.container ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  transform: skewX(20deg);
+  width: 100%;
+  border: 1px solid #ebebeb;
+}
+.container ul li {
+  padding: 7px 40px;
+  border: 1px solid #ebebeb;
+}
+.container ul li:last-child {
+  background-color: #273db1;
+  color: white;
+}
+.container .payment-status {
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.container .payment-status .svg-wrapper {
+  width: 70px;
+  height: 70px;
+  background-color: #008f20;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container .payment-status p {
+  font-size: 30px;
+  font-weight: 600;
+}
+.container .ticket-wrapper {
+  max-width: 1100px;
+  width: 100%;
+  background-color: rgba(39, 61, 177, 0.03);
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 30px;
+}
+.container .ticket-wrapper .ticket-info {
+  max-width: 900px;
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+}
+.container .ticket-wrapper .ticket-info .company-name {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.container .ticket-wrapper .ticket-info .company-name p {
+  font-weight: 600;
+}
+.container .ticket-wrapper .ticket-info .company-name img {
+  width: 70px;
+}
+.container .ticket-wrapper .ticket-info .ticket-id-date {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.container .ticket-wrapper .ticket-info .ticket-id-date p span {
+  font-weight: 600;
+}
+.container .ticket-wrapper .ticket-info .train-info {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  border: #ebebeb 1px solid;
+  border-radius: 10px;
+  padding: 10px 20px;
+}
+.container .ticket-wrapper .ticket-info .train-info div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.container .ticket-wrapper .ticket-info .contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.container .ticket-wrapper .ticket-info .contact-info > p {
+  font-weight: 600;
+}
+.container .ticket-wrapper .ticket-info .contact-info div {
+  border: 1px solid #ebebeb;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.container .ticket-wrapper .ticket-info .contact-info div p {
+  flex-grow: 1;
+  overflow-wrap: anywhere;
+}
+.container .ticket-wrapper .ticket-info .contact-info div p span {
+  font-weight: 600;
+}
+.container .ticket-wrapper .ticket-info .passengers-div {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.container .ticket-wrapper .ticket-info .passengers-div > p {
+  font-weight: 600;
+}
+.container .ticket-wrapper .ticket-info .passengers-div .passengers-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.container .ticket-wrapper .ticket-info .passengers-div .passengers-info .pass-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  border: 1px solid #ebebeb;
+  padding: 10px;
+  border-radius: 10px;
+}
+.container .ticket-wrapper .ticket-info .passengers-div .passengers-info .pass-container div {
+  display: flex;
+  gap: 5px;
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+}
+.container .ticket-wrapper .ticket-info .passengers-div .passengers-info .pass-container div p:nth-child(1) {
+  font-weight: 600;
+}
+.container .ticket-wrapper .ticket-info .payment-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.container .ticket-wrapper .ticket-info .payment-info .card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.container .ticket-wrapper .ticket-info .payment-info .card-info div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.container .ticket-wrapper .ticket-info .payment-info .card-info div p:first-child {
+  font-weight: 600;
+}
+.container .ticket-wrapper .ticket-info .payment-info .total {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-top: 1px solid black;
+  max-width: 300px;
+  width: 100%;
+}
+.container .ticket-wrapper .ticket-info .payment-info .total p:first-child {
+  font-weight: 600;
+}
+.container .ticket-wrapper .ticket-info .invoice-copyright {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+}
+.container .ticket-wrapper .ticket-info .invoice-copyright p {
+  font-weight: 600;
+}
+.container .ticket-wrapper .ticket-info .invoice-copyright p:nth-child(2) {
+  color: red;
+}
+.container .ticket-wrapper .print-donwload {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background-color: #fff;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  position: relative;
+}
+.container .ticket-wrapper .print-donwload div {
+  padding: 5px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.container .ticket-wrapper .print-donwload div:hover::before {
+  display: block;
+}
+.container .ticket-wrapper .print-donwload .print {
+  background-color: rgba(0, 123, 255, 0.3803921569);
+}
+.container .ticket-wrapper .print-donwload .print::before {
+  content: attr(name);
+  color: #fff;
+  display: none;
+  position: absolute;
+  top: -30px;
+  background-color: rgba(0, 123, 255, 0.3803921569);
+  padding: 5px;
+  border-radius: 4px;
+}
+.container .ticket-wrapper .print-donwload .download {
+  background-color: rgba(52, 199, 89, 0.3803921569);
+}
+.container .ticket-wrapper .print-donwload .download::before {
+  content: attr(name);
+  color: #fff;
+  display: none;
+  position: absolute;
+  bottom: -30px;
+  background-color: rgba(52, 199, 89, 0.3803921569);
+  padding: 5px;
+  border-radius: 4px;
+}
+
+@media screen and (max-width: 710px) {
+  .container .ticket-wrapper {
+    flex-direction: column-reverse;
+    gap: 20px;
+  }
+  .container .ticket-wrapper .ticket-info {
+    max-width: 100%;
+  }
+  .container .ticket-wrapper .print-donwload {
+    flex-direction: row;
+  }
+}
+@media screen and (max-width: 550px) {
+  .container {
+    padding: 0px;
+  }
+  .container ul {
+    transform: skewX(0deg);
+    border: none;
+  }
+  .container .ticket-wrapper {
+    max-width: 100%;
+  }
+  .container .pass-container {
+    flex-direction: column;
+  }
+}
+body.dark-theme .container {
+  margin: auto;
+  margin-top: 250px;
+  max-width: 1300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding: 30px;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.6);
+}
+body.dark-theme .container ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  transform: skewX(20deg);
+  width: 100%;
+  border: 1px solid #444;
+}
+body.dark-theme .container ul li {
+  padding: 7px 40px;
+  border: 1px solid #444;
+  color: #ccc;
+}
+body.dark-theme .container ul li:last-child {
+  background-color: #1a2a7c;
+  color: #eee;
+}
+body.dark-theme .container .payment-status {
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+body.dark-theme .container .payment-status .svg-wrapper {
+  width: 70px;
+  height: 70px;
+  background-color: #006e16;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body.dark-theme .container .payment-status p {
+  font-size: 30px;
+  font-weight: 600;
+  color: #ddd;
+}
+body.dark-theme .container .ticket-wrapper {
+  max-width: 1100px;
+  width: 100%;
+  background-color: rgba(39, 61, 177, 0.1);
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 30px;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info {
+  max-width: 900px;
+  width: 100%;
+  background-color: #222532;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+  color: #ddd;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .company-name {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .company-name p {
+  font-weight: 600;
+  color: #eee;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .company-name img {
+  filter: brightness(1) invert(0.8);
+  width: 70px;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .ticket-id-date {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .ticket-id-date p span {
+  font-weight: 600;
+  color: #eee;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .train-info {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 10px 20px;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .train-info div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: #ccc;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .contact-info > p {
+  font-weight: 600;
+  color: #eee;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .contact-info div {
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .contact-info div p {
+  flex-grow: 1;
+  overflow-wrap: anywhere;
+  color: #ccc;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .contact-info div p span {
+  font-weight: 600;
+  color: #eee;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .passengers-div {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .passengers-div > p {
+  font-weight: 600;
+  color: #eee;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .passengers-div .passengers-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .passengers-div .passengers-info .pass-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  border: 1px solid #444;
+  padding: 10px;
+  border-radius: 10px;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .passengers-div .passengers-info .pass-container div {
+  display: flex;
+  gap: 5px;
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+  color: #ccc;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .passengers-div .passengers-info .pass-container div p:nth-child(1) {
+  font-weight: 600;
+  color: #eee;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .payment-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .payment-info .card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .payment-info .card-info div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .payment-info .card-info div p:first-child {
+  font-weight: 600;
+  color: #eee;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .payment-info .total {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-top: 1px solid #eee;
+  max-width: 300px;
+  width: 100%;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .payment-info .total p:first-child {
+  font-weight: 600;
+  color: #eee;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .invoice-copyright {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .invoice-copyright p {
+  font-weight: 600;
+  color: #ccc;
+}
+body.dark-theme .container .ticket-wrapper .ticket-info .invoice-copyright p:nth-child(2) {
+  color: #ff6666;
+}
+body.dark-theme .container .ticket-wrapper .print-donwload {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background-color: #222532;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  position: relative;
+  color: #ddd;
+}
+body.dark-theme .container .ticket-wrapper .print-donwload div {
+  padding: 5px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+body.dark-theme .container .ticket-wrapper .print-donwload div:hover::before {
+  display: block;
+}
+body.dark-theme .container .ticket-wrapper .print-donwload .print {
+  background-color: rgba(0, 86, 179, 0.631372549);
+}
+body.dark-theme .container .ticket-wrapper .print-donwload .print::before {
+  content: attr(name);
+  color: #fff;
+  display: none;
+  position: absolute;
+  top: -30px;
+  background-color: rgba(0, 86, 179, 0.631372549);
+  padding: 5px;
+  border-radius: 4px;
+}
+body.dark-theme .container .ticket-wrapper .print-donwload .download {
+  background-color: rgba(34, 139, 34, 0.631372549);
+}
+body.dark-theme .container .ticket-wrapper .print-donwload .download::before {
+  content: attr(name);
+  color: #fff;
+  display: none;
+  position: absolute;
+  bottom: -30px;
+  background-color: rgba(34, 139, 34, 0.631372549);
+  padding: 5px;
+  border-radius: 4px;
+}
+@media screen and (max-width: 710px) {
+  body.dark-theme .container .ticket-wrapper {
+    flex-direction: column-reverse;
+    gap: 20px;
+  }
+  body.dark-theme .container .ticket-wrapper .ticket-info {
+    max-width: 100%;
+  }
+  body.dark-theme .container .ticket-wrapper .print-donwload {
+    flex-direction: row;
+  }
+}
+@media screen and (max-width: 550px) {
+  body.dark-theme .container {
+    padding: 0;
+  }
+  body.dark-theme .container ul {
+    transform: skewX(0deg);
+    border: none;
+  }
+  body.dark-theme .container .ticket-wrapper {
+    max-width: 100%;
+  }
+  body.dark-theme .container .pass-container {
+    flex-direction: column;
+  }
+}/*# sourceMappingURL=paymentSucces.css.map */

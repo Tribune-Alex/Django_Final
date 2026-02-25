@@ -1,0 +1,226 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Check Tickets</title>
+    <link rel="icon" href="Images/Icon.png" />
+    <link rel="stylesheet" href="{% static 'css/HeaderFooter.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/checkTicket.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/booking.css' %}">
+    <link rel="stylesheet" href="{% static 'css/paymentsucces.css'%}"/>
+    <link rel="stylesheet" href="{% static  'css/wantedtrains.css' %}" />
+  </head>
+  <body>
+    <header id="header">
+      <div class="header-info">
+        <div class="icons">
+          <a href="{% url 'index' %}">
+            <img
+              class="desktop-icon"
+              src="Images/Header Icon.png"
+              alt="Step Railway icon text"
+            />
+          </a>
+
+          <a href="{% url 'index' %}">
+            <img
+              class="responsive-icon"
+              src="{% static 'images/HeaderIcon.png' %}"
+              alt="Step Railway icon responsive"
+            />
+          </a>
+        </div>
+        <div>
+          <a
+            href="{% url 'check_ticket' %}"
+            class="check-ticket__button"
+            data-translate="ბილეთის შემოწმება/დაბრუნება"
+          >
+            ბილეთის შემოწმება/დაბრუნება
+          </a>
+
+          <div class="burger-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="burger-menu-list">
+            <div class="closeBtn">&times;</div>
+
+            <a
+              href="{% url 'check_ticket' %}"
+              class="check-ticket__button"
+              data-translate="ბილეთის შემოწმება/დაბრუნება"
+            >
+              ბილეთის შემოწმება/დაბრუნება
+            </a>
+
+            <a href="userProfile.html" id="userProfileHref" class="userPfp">
+              <img id="userProfileIcon" src="" alt="Pfp" />
+              <p data-translate="პროფილი" id="pfpInfo">პროფილი</p></a
+            >
+
+            <a href="chatBot.html" class="chatBot" data-translate="ბოტი"
+              >ბოტი</a
+            >
+            <a href="history.html" data-translate="ბილეთების ისტორია"
+              >ბილეთების ისტორია</a
+            >
+            <a href="support.html" class="chatBot" data-translate="დახმარება"
+              >დახმარება</a
+            >
+            <button class="dark-btn">
+              <img src="Images/dark.png" alt="dark theme" />
+
+              <p data-translate="ღამის რეჟიმი">ღამის რეჟიმი</p>
+            </button>
+            <select name="translate" id="lang">
+              <option value="ka">ქართული</option>
+              <option value="en">English</option>
+            </select>
+
+            <button class="logOut" id="logOut">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+                width="20"
+                height="20"
+              >
+                <path
+                  fill="#ffffff"
+                  d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"
+                />
+              </svg>
+
+              <p data-translate="გამოსვლა">გასვლა</p>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <form class="my-form">
+        <div class="input-div">
+          <label for="textInput" data-translate="ბილეთის ნომერი"
+            >ბილეთის ნომერი</label
+          >
+          <input type="text" id="textInput" />
+        </div>
+
+        <button data-translate="შემოწმება">შემოწმება</button>
+      </form>
+
+      <div class="container">
+        <div class="payment-status">
+          <div class="svg-wrapper">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 448 512"
+              width="40"
+              height="40"
+            >
+              <path
+                fill="#ffffff"
+                d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"
+              />
+            </svg>
+          </div>
+          <p data-translate="ბილეთის საფასური გადახდილია, იხილეთ ბილეთი:">
+            ბილეთის საფასური გადახდილია, იხილეთ ბილეთი:
+          </p>
+        </div>
+
+        <div class="ticket-wrapper">
+          <div class="ticket-info"></div>
+
+          <div class="print-donwload">
+            <div class="print" name="Print">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="ionicon"
+                viewBox="0 0 512 512"
+                width="25"
+                height="25"
+                color="#007aff"
+              >
+                <path
+                  d="M384 368h24a40.12 40.12 0 0040-40V168a40.12 40.12 0 00-40-40H104a40.12 40.12 0 00-40 40v160a40.12 40.12 0 0040 40h24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linejoin="round"
+                  stroke-width="32"
+                ></path>
+                <rect
+                  x="128"
+                  y="240"
+                  width="256"
+                  height="208"
+                  rx="24.32"
+                  ry="24.32"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linejoin="round"
+                  stroke-width="32"
+                ></rect>
+                <path
+                  d="M384 128v-24a40.12 40.12 0 00-40-40H168a40.12 40.12 0 00-40 40v24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linejoin="round"
+                  stroke-width="32"
+                ></path>
+                <circle cx="392" cy="184" r="24" fill="currentColor"></circle>
+              </svg>
+            </div>
+            <div class="download" name="Download">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="ionicon"
+                viewBox="0 0 512 512"
+                width="25"
+                height="25"
+                color="#34c759"
+              >
+                <path
+                  d="M320 336h76c55 0 100-21.21 100-75.6s-53-73.47-96-75.6C391.11 99.74 329 48 256 48c-69 0-113.44 45.79-128 91.2-60 5.7-112 35.88-112 98.4S70 336 136 336h56M192 400.1l64 63.9 64-63.9M256 224v224.03"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="32"
+                  fill="none"
+                ></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="delete-ticket">
+          <p data-translate="ბილეთის გაუქმება" onclick="sentNotification()">ბილეთის გაუქმება</p>
+        </div>
+      </div>
+
+      <div class="error"></div>
+    </main>
+
+    <footer>
+      <div class="footer-txt-div">
+        <p>
+          © 2023
+          <a href="https://railway.stepprojects.ge/" target="_blank"
+            >Step Railway</a
+          >.
+          <span data-translate="ყველა უფლება დაცულია."
+            >ყველა უფლება დაცულია.</span
+          >
+        </p>
+      </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="{% static 'js/checkTicket.js' %}"></script>
+  </body>
+</html>

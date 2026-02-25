@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STEP RAILWAY</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'images/Icon.png' %}" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'css/homestyle.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/HeaderFooter.css' %}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <link rel="stylesheet" href="{% static 'css/checkTicket.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/booking.css' %}">
+  <link rel="stylesheet" href="{% static 'css/paymentsucces.css'%}"/>
+  <link rel="stylesheet" href="{% static  'css/wantedtrains.css' %}" />
+</head>
+<body>
+  <!-- HEADER -->
+  <header id="header">
+    <div class="header-info">
+      <div class="icons">
+        <a href="{% url 'index' %}">
+          <img class="desktop-icon" src="{% static 'images/HeaderIcon.png' %}" alt="Step Railway icon text" />
+        </a>
+        <!-- <a href="index.html">
+          <img class="responsive-icon" src="{% static 'images/Icon.png' %}" alt="Step Railway icon responsive" />
+        </a> -->
+      </div>
+
+      <div>
+        <button>
+        <a href="{% url 'check_ticket' %}" class="check-ticket__button" data-translate="ბილეთის შემოწმება/დაბრუნება">
+          ბილეთის შემოწმება/დაბრუნება
+        </a>
+        </button>
+
+        <!-- <div class="burger-btn">
+          <span></span>
+          <span></span>
+          <span></span> -->
+        </div>
+
+        <!-- <div class="burger-menu-list">
+          <div class="closeBtn">&times;</div>
+          <a href="checkTicket.html" class="check-ticket__button" data-translate="ბილეთის შემოწმება/დაბრუნება">
+            ბილეთის შემოწმება/დაბრუნება
+          </a>
+          <a href="userProfile.html" id="userProfileHref" class="userPfp">
+            <img id="userProfileIcon" src="{% static 'images/user-placeholder.png' %}" alt="Pfp" />
+            <p data-translate="პროფილი" id="pfpInfo">პროფილი</p>
+          </a>
+          <a href="chatBot.html" class="chatBot" data-translate="ბოტი">ბოტი</a>
+          <a href="history.html" data-translate="ბილეთების ისტორია">ბილეთების ისტორია</a>
+          <a href="support.html" class="chatBot" data-translate="დახმარება">დახმარება</a>
+          <a href="reviews.html" data-translate="მიმოხილვები">მიმოხილვები</a>
+          <a href="trainBingo.html" data-translate="ბინგო" class="chatBot">ბინგო</a>
+          <button class="dark-btn">
+            <img src="{% static 'images/dark.png' %}" alt="dark theme" />
+            <p data-translate="ღამის რეჟიმი">ღამის რეჟიმი</p>
+          </button>
+          <select name="translate" id="lang">
+            <option value="ka">ქართული</option>
+            <option value="en">English</option>
+          </select>
+          <button class="logOut" id="logOut">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20">
+              <path fill="#ffffff" d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/>
+            </svg>
+            <p data-translate="გამოსვლა">გასვლა</p>
+          </button>
+        </div>
+      </div>
+    </div> -->
+  </header>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="top-div">
+      <div class="top-div__info">
+        <div class="text-div__top">
+          <h4 data-translate="შეიძინეთ მატარებლის ბილეთები ონლაინ">შეიძინეთ მატარებლის ბილეთები ონლაინ</h4>
+          <p data-translate="გისურვებთ ბედნიერ მგზავრობას">გისურვებთ ბედნიერ მგზავრობას</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-div">
+      <div class="bottom-top__div">
+        <h4 data-translate="დაჯავშნეთ მატარებლის ბილეთი">დაჯავშნეთ მატარებლის ბილეთი</h4>
+        <div class="inputs">
+          <form action="" id="myForm">
+            <div class="input-from before">
+              <input type="text" class="from" value="საიდან" required data-translate-value="საიდან" readonly />
+              <ul class="from-ul">
+                <li data-translate="საიდან" class="non-selectable">საიდან</li>
+                <li data-translate="თბილისი" data-value="თბილისი">თბილისი</li>
+                <li data-translate="ბათუმი" data-value="ბათუმი">ბათუმი</li>
+                <li data-translate="ფოთი" data-value="ფოთი">ფოთი</li>
+              </ul>
+            </div>
+
+            <div class="input-to before">
+              <input type="text" class="to" value="სად" required data-translate-value="სად" readonly />
+              <ul class="to-ul">
+                <li data-translate="სად" class="non-selectable">სად</li>
+                <li data-translate="თბილისი" data-value="თბილისი">თბილისი</li>
+                <li data-translate="ბათუმი" data-value="ბათუმი">ბათუმი</li>
+                <li data-translate="ფოთი" data-value="ფოთი">ფოთი</li>
+              </ul>
+            </div>
+
+            <div class="input-date big-input">
+              <input type="text" class="date" id="dateInput" placeholder="გამგზავრების თარიღი" required />
+            </div>
+
+            <div class="passenger-count big-input">
+              <input type="number" min="1" max="120" class="count" placeholder="მგზავრების რაოდენობა" required />
+            </div>
+
+            <button class="search-train" data-translate="მატარებლის მოძებნა">მატარებლის მოძებნა</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="bottom-bottom__div">
+        <img class="bottom-img" src="{% static 'images/homepage bottom.png' %}" alt="homepage bottom" />
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-txt-div">
+      <p>© 2023 <a href="https://railway.stepprojects.ge/" target="_blank">Step Railway</a>. 
+      <span data-translate="ყველა უფლება დაცულია.">ყველა უფლება დაცულია.</span></p>
+    </div>
+  </footer>
+
+  
+  
+  <!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

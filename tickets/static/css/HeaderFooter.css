@@ -1,0 +1,180 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'main-font', sans-serif;
+}
+
+@font-face {
+  font-family: main-font;
+  src: url('../Fonts/Lato/Lato-Regular.ttf') format('truetype');
+}
+
+/* BODY */
+body {
+  background-color: #f5f6fa;
+  color: #333;
+  overflow-x: hidden;
+}
+
+/* TOP DIV */
+.top-div {
+  width: 100%;
+  background-color: #f5f6fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 100px 20px 50px 20px;
+}
+
+.top-div__info {
+  max-width: 1200px;
+  width: 100%;
+  text-align: center;
+}
+
+.text-div__top h4 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.text-div__top p {
+  font-size: 18px;
+  color: #555;
+}
+
+/* BOTTOM DIV */
+.bottom-div {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+/* BOTTOM TOP DIV (форма) */
+.bottom-top__div h4 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.inputs form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* INPUT BLOCKS */
+.input-from,
+.input-to,
+.input-date,
+.passenger-count {
+  flex: 1 1 250px;
+  max-width: 300px;
+  position: relative;
+}
+
+input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* DROPDOWN LISTS */
+.from-ul,
+.to-ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  display: none;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  z-index: 10;
+}
+
+.input-from.active .from-ul,
+.input-to.active .to-ul {
+  display: block;
+}
+
+.from-ul li,
+.to-ul li {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.from-ul li:hover,
+.to-ul li:hover {
+  background-color: #2841bf;
+  color: #fff;
+}
+
+/* BUTTON */
+.search-train {
+  padding: 12px 30px;
+  background-color: #2841bf;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  flex: 1 1 200px;
+  max-width: 300px;
+  transition: background 0.3s;
+}
+
+.search-train:hover {
+  background-color: #3b51e0;
+}
+
+/* BOTTOM IMAGE */
+.bottom-bottom__div {
+  display: flex;
+  justify-content: center;
+}
+
+.bottom-bottom__div img {
+  max-width: 90%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* RESPONSIVE */
+@media screen and (max-width: 900px) {
+  .top-div {
+    padding: 80px 20px 40px 20px;
+  }
+  .text-div__top h4 {
+    font-size: 28px;
+  }
+  .text-div__top p {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .input-from,
+  .input-to,
+  .input-date,
+  .passenger-count,
+  .search-train {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .bottom-div {
+    padding: 30px 10px;
+  }
+}
