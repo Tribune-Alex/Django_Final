@@ -16,7 +16,7 @@
     <header id="header">
       <div class="header-info">
         <div class="icons">
-          <a href="index.html">
+          <a href="{% url 'index' %}">
             <img
               class="desktop-icon"
               src="images/Header Icon.png"
@@ -24,7 +24,7 @@
             />
           </a>
 
-          <a href="index.html">
+          <a href="{% url 'index' %}">
             <img
               class="responsive-icon"
               src="Images/Icon.png"
@@ -553,6 +553,7 @@
     </footer>
 
     <script src="{% static 'js/booking.js' %}"></script>
+    
   </body>
 </html>
 

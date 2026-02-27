@@ -1,99 +1,72 @@
-const fromInput = document.querySelector(".from"),
-      fromList = document.querySelector(".from-ul"),
-      fromListOption = document.querySelectorAll(".from-ul li"),
-      toInput = document.querySelector(".to"),
-      toList = document.querySelector(".to-ul"),
-      toListOption = document.querySelectorAll(".to-ul li"),
-      dateInput = document.querySelector(".date"),
-      passengerCount = document.querySelector(".count"),
-      searchTrainBtn = document.querySelector(".search-train"),
-      myForm = document.getElementById("myForm");
+document.addEventListener("DOMContentLoaded", () => {
+  const fromInput = document.querySelector(".from");
+  const toInput = document.querySelector(".to");
+  const fromUl = document.querySelector(".from-ul");
+  const toUl = document.querySelector(".to-ul");
+  const form = document.getElementById("myForm");
 
+  flatpickr("#dateInput", { dateFormat: "Y-m-d" });
 
-fromInput.setAttribute("readonly", true);
-toInput.setAttribute("readonly", true);
+  fetch("/api/city/")
+    .then(res => {
+      if (!res.ok) {
+        throw new Error("Ошибка сети");
+      }
+      return res.json();
+    })
+    .then(cities => {
+      cities.forEach(city => {
+        const liFrom = document.createElement("li");
+        liFrom.textContent = city.name;
+        liFrom.dataset.value = city.id;
+        fromUl.appendChild(liFrom);
 
+        const liTo = document.createElement("li");
+        liTo.textContent = city.name;
+        liTo.dataset.value = city.id;
+        toUl.appendChild(liTo);
+      });
 
-document.addEventListener("DOMContentLoaded", function () {
-  flatpickr("#dateInput", {
-    dateFormat: "Y-m-d", 
-    minDate: "today",
-    allowInput: false,
-    onChange: function(selectedDates, dateStr, instance) {
-      
-      console.log("Выбрана дата:", dateStr);
-      document.getElementById("dateInput").value = dateStr;
-    }
-  });
-});
+      setupSelect(fromInput, fromUl, "fromInputValue");
+      setupSelect(toInput, toUl, "toInputValue");
+    })
+    .catch(err => console.error("Ошибка при загрузке городов:", err));
 
+  function setupSelect(input, ul, storageKey) {
+    input.addEventListener("click", () => {
+      ul.classList.toggle("show");
+    });
 
-fromInput.addEventListener("click", () => {
-  fromInput.classList.add("active");
-  document.querySelector(".input-from").classList.add("active");
-});
-window.addEventListener("click", function (event) {
-  if (event.target !== fromInput) {
-    fromInput.classList.remove("active");
-    document.querySelector(".input-from").classList.remove("active");
+    ul.addEventListener("click", e => {
+      if (e.target.tagName === "LI") {
+        input.value = e.target.textContent;
+        sessionStorage.setItem(storageKey, e.target.dataset.value);
+        ul.classList.remove("show");
+      }
+    });
+
+    document.addEventListener("click", e => {
+      if (!ul.contains(e.target) && e.target !== input) {
+        ul.classList.remove("show");
+      }
+    });
   }
-});
-fromListOption.forEach((option) => {
-  option.addEventListener("click", function () {
-    fromInput.value = this.textContent;
-    fromInput.setAttribute(
-      "data-value",
-      this.getAttribute("data-value") || this.textContent
-    );
-    fromInput.classList.remove("active");
-  });
-});
 
+  form.addEventListener("submit", e => {
+    e.preventDefault();
 
-toInput.addEventListener("click", () => {
-  toInput.classList.add("active");
-  document.querySelector(".input-to").classList.add("active");
-});
-window.addEventListener("click", function (event) {
-  if (event.target !== toInput) {
-    toInput.classList.remove("active");
-    document.querySelector(".input-to").classList.remove("active");
-  }
-});
-toListOption.forEach((option) => {
-  option.addEventListener("click", function () {
-    toInput.value = this.textContent;
-    toInput.setAttribute(
-      "data-value",
-      this.getAttribute("data-value") || this.textContent
-    );
-    toInput.classList.remove("active");
-  });
-});
+    const date = document.querySelector("#dateInput").value;
 
-
-myForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const from = fromInput.getAttribute("data-value");
-    const to = toInput.getAttribute("data-value");
-
-    
-    const selectedDate = dateInput._flatpickr
-        ? dateInput._flatpickr.selectedDates[0]?.toISOString().slice(0,10)
-        : dateInput.value;
-
-    const passenger = passengerCount.value;
-
-    if (!from || !to || !selectedDate || !passenger || from === to) {
-        alert("ყველა ველი სწორად შეავსეთ!");
-        return;
+    if (
+      !sessionStorage.getItem("fromInputValue") ||
+      !sessionStorage.getItem("toInputValue") ||
+      !date
+    ) {
+      alert("შეავსეთ ყველა ველი");
+      return;
     }
 
-    sessionStorage.setItem("fromInputValue", from);
-    sessionStorage.setItem("toInputValue", to);
-    sessionStorage.setItem("selectedDate", selectedDate);
-    sessionStorage.setItem("passengerCount", passenger);
-
+    sessionStorage.setItem("selectedDate", date);
     window.location.href = "/wanted-trains/";
+  });
 });

@@ -1,3 +1,4 @@
+/* ===================== Reset и базовые стили ===================== */
 *,
 *::before,
 *::after {
@@ -12,14 +13,13 @@
   src: url('../Fonts/Lato/Lato-Regular.ttf') format('truetype');
 }
 
-/* BODY */
 body {
   background-color: #f5f6fa;
   color: #333;
   overflow-x: hidden;
 }
 
-/* TOP DIV */
+/* ===================== TOP DIV ===================== */
 .top-div {
   width: 100%;
   background-color: #f5f6fa;
@@ -46,7 +46,7 @@ body {
   color: #555;
 }
 
-/* BOTTOM DIV */
+/* ===================== BOTTOM DIV ===================== */
 .bottom-div {
   max-width: 1200px;
   margin: 0 auto;
@@ -56,7 +56,7 @@ body {
   gap: 50px;
 }
 
-/* BOTTOM TOP DIV (форма) */
+/* ===================== Форма ===================== */
 .bottom-top__div h4 {
   font-size: 28px;
   font-weight: 700;
@@ -71,7 +71,7 @@ body {
   justify-content: center;
 }
 
-/* INPUT BLOCKS */
+/* ===================== INPUT BLOCKS ===================== */
 .input-from,
 .input-to,
 .input-date,
@@ -90,29 +90,34 @@ input {
   cursor: pointer;
 }
 
-/* DROPDOWN LISTS */
+/* ===================== DROPDOWN LISTS ===================== */
 .from-ul,
 .to-ul {
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
-  display: none;
+  display: none;  /* скрыто по умолчанию */
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
   z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+  transition: all 0.2s ease;
 }
 
-.input-from.active .from-ul,
-.input-to.active .to-ul {
-  display: block;
+.from-ul.show,
+.to-ul.show {
+  display: block; /* показываем при добавлении класса show */
+  opacity: 1;
 }
 
 .from-ul li,
 .to-ul li {
   padding: 10px 15px;
   cursor: pointer;
+  list-style: none;
 }
 
 .from-ul li:hover,
@@ -121,7 +126,7 @@ input {
   color: #fff;
 }
 
-/* BUTTON */
+/* ===================== BUTTON ===================== */
 .search-train {
   padding: 12px 30px;
   background-color: #2841bf;
@@ -139,7 +144,7 @@ input {
   background-color: #3b51e0;
 }
 
-/* BOTTOM IMAGE */
+/* ===================== BOTTOM IMAGE ===================== */
 .bottom-bottom__div {
   display: flex;
   justify-content: center;
@@ -151,7 +156,7 @@ input {
   border-radius: 10px;
 }
 
-/* RESPONSIVE */
+/* ===================== RESPONSIVE ===================== */
 @media screen and (max-width: 900px) {
   .top-div {
     padding: 80px 20px 40px 20px;
