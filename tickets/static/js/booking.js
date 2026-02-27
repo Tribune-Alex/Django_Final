@@ -32,7 +32,7 @@ function getCSRFToken() {
 
 async function loadTrain() {
     try {
-        const response = await fetch(`/trains/${trainId}/`);
+        const response = await fetch(`/api/train/${trainId}/`);
 
         if (!response.ok) {
             const text = await response.text();

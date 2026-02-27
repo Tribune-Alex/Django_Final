@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from api.serializers import TrainSerializer,CitySerializer,VagonSerializer,SeatSerializer
-from tickets.models import Train,City,Vagon,Seat
+from api.serializers import TrainSerializer,CitySerializer,VagonSerializer,SeatSerializer,TicketSerializer
+from tickets.models import Train,City,Vagon,Seat,Ticket
 
 # @api_view(['GET'])
 # def train_json(request):
@@ -46,4 +46,10 @@ def vagon(request):
 def seat(request):
     seat =Seat.objects.all()
     serializer = SeatSerializer(seat, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET','POST'])
+def ticket(request):
+    ticket =Ticket.objects.all()
+    serializer = TicketSerializer(ticket, many=True)
     return Response(serializer.data)

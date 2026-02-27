@@ -65,7 +65,7 @@ if (!from || !to || !date) {
 
             
             trains.forEach(train => {
-                fetch(`/trains/${train.id}/`)
+                fetch(`/api/train/${train.id}/`)
                     .then(res => res.json())
                     .then(trainDetail => {
                         let booked = 0;

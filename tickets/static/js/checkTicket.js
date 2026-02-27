@@ -11,7 +11,7 @@ const ticketEl = document.querySelector(".ticket-info");
 
 async function cancelTicket(ticketId) {
   try {
-    const res = await fetch(`/api/tickets/${ticketId}/cancel/`, { method: "DELETE" });
+    const res = await fetch(`/api/ticket/${ticketId}/cancel/`, { method: "DELETE" });
     if (!res.ok) throw new Error("Can't delete");
     container.style.display = "none";
     errorDiv.style.display = "flex";
@@ -32,7 +32,7 @@ deleteTicketBtn.addEventListener("click", () => {
 
 async function checkTicket(ticketId) {
   try {
-    const res = await fetch(`/api/tickets/${ticketId}/checkstatus/`);
+    const res = await fetch(`/api/ticket/${ticketId}/checkstatus/`);
     if (!res.ok) throw new Error("Not Found");
     const data = await res.json();
 
