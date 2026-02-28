@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch("/api/city/")
     .then(res => {
       if (!res.ok) {
-        throw new Error("Ошибка сети");
+        throw new Error("Error in LAN");
       }
       return res.json();
     })
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
       setupSelect(fromInput, fromUl, "fromInputValue");
       setupSelect(toInput, toUl, "toInputValue");
     })
-    .catch(err => console.error("Ошибка при загрузке городов:", err));
+    .catch(err => console.error("Cities not found", err));
 
   function setupSelect(input, ul, storageKey) {
     input.addEventListener("click", () => {

@@ -54,13 +54,13 @@ if (!from || !to || !date) {
             trainDiv.innerHTML = tr;
 
             
-            const btns = document.querySelectorAll(".btn"); // кнопки "Book" после генерации таблицы
+            const btns = document.querySelectorAll(".btn"); 
             btns.forEach((btn, index) => {
               btn.addEventListener("click", () => {
-                const train = trains[index]; // trains — массив поездов, который ты получил с сервера
-                console.log("Сохраняем поезд:", train.id); // для отладки
-                sessionStorage.setItem("selectedTrainId", train.id); // <--- сохраняем ID
-                window.location.href = "/booking/"; // переходим на страницу бронирования
+                const train = trains[index]; 
+                console.log("Сохраняем поезд:", train.id); 
+                sessionStorage.setItem("selectedTrainId", train.id); 
+                window.location.href = "/booking/"; 
             });
          });
 
@@ -69,18 +69,18 @@ if (!from || !to || !date) {
             fetch(`/trains/${train.id}/`)
             .then(res => {
             console.log("Status:", res.status);
-            return res.text(); // сначала смотрим, что реально возвращает сервер
+            return res.text(); 
         })
         .then(data => {
             console.log("Data:", data);
 
-            // Попробуем преобразовать в JSON, если это JSON
+            
             let trainDetail;
             try {
                 trainDetail = JSON.parse(data);
             } catch (e) {
                 console.error("Not JSON:", e);
-                return; // выходим, чтобы не ломать код дальше
+                return; 
             }
 
             let booked = 0;
