@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Book The Train</title>
-    <link rel="icon" href="images/Icon.png" />
+    <link rel="icon" href="{% static 'images/Icon.png' %}" />
     
     <link rel="stylesheet" href="{% static 'css/HeaderFooter.css' %}">
 
@@ -13,13 +13,13 @@
     <link rel="stylesheet" href="{% static 'css/booking.css' %}">
   </head>
   <body>
-    <header id="header">
+    <!-- <header id="header">
       <div class="header-info">
         <div class="icons">
           <a href="{% url 'index' %}">
             <img
               class="desktop-icon"
-              src="images/Header Icon.png"
+              src="{% static 'images/HeaderIcon.png' %}"
               alt="Step Railway icon text"
             />
           </a>
@@ -27,7 +27,7 @@
           <a href="{% url 'index' %}">
             <img
               class="responsive-icon"
-              src="Images/Icon.png"
+              src="{% static 'images/Icon.png' %}"
               alt="Step Railway icon responsive"
             />
           </a>
@@ -73,7 +73,7 @@
               >დახმარება</a
             >
             <button class="dark-btn">
-              <img src="Images/dark.png" alt="dark theme" />
+              <img src="{% static 'images/dark.png' %}" alt="dark theme" />
 
               <p data-translate="ღამის რეჟიმი">ღამის რეჟიმი</p>
             </button>
@@ -100,7 +100,7 @@
           </div>
         </div>
       </div>
-    </header>
+    </header> -->
 
     <div class="name-div">
       <p data-translate="მგზავრების მონაცემები">მგზავრების მონაცემები</p>
@@ -487,15 +487,15 @@
 
         <div class="vagons">
           <div name="I კლასი" data-translate-name="1 კლასი">
-            <img src="Images/firstWagon.png" alt="vagons" class="vagonImg" />
+            <img src="{% static 'images/firstWagon.png' %}" alt="vagons" class="vagonImg" />
           </div>
 
           <div name="II კლასი" data-translate-name="2 კლასი">
-            <img src="Images/midWagon.png" alt="vagons" class="vagonImg" />
+            <img src="{% static 'images/midWagon.png' %}" alt="vagons" class="vagonImg" />
           </div>
 
           <div name="ბიზნესი" data-translate-name="ბიზნესი">
-            <img src="Images/lastWagon.png" alt="vagons" class="vagonImg" />
+            <img src="{% static 'images/lastWagon.png' %}" alt="vagons" class="vagonImg" />
           </div>
         </div>
 

@@ -196,7 +196,7 @@ header {
   content: "";
   height: 100%;
   width: 2px;
-  background-image: url(Images/line-vertical.png);
+  background-image: url("/static/Images/line-vertical.png");
 }
 .book-train__div .details-booking .table-details-checkout div > div {
   display: flex;
