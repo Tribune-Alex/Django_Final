@@ -1,5 +1,4 @@
 
-
 const seatsContainer = document.getElementById("seats-div");
 const invoiceBody = document.querySelector(".invoice-table-body");
 const totalElement = document.getElementById("total");
@@ -12,8 +11,7 @@ const errorDiv = document.querySelector(".error");
 let selectedSeats = [];
 let currentTrain = null;
 let totalPrice = 0;
-const PRICE = 1200; 
-
+const PRICE = 1200;
 
 function getCSRFToken() {
     return document.cookie.split('; ')
@@ -23,34 +21,41 @@ function getCSRFToken() {
 
 const trainIdRaw = sessionStorage.getItem("selectedTrainId");
 const trainId = parseInt(trainIdRaw);
+const selectedDateRaw = sessionStorage.getItem("selectedDate");
+const selectedDate = selectedDateRaw ? selectedDateRaw.split(':')[0] : null;
+
+
+const tripId = sessionStorage.getItem("selectedTripId"); 
 
 
 async function loadTrain() {
     if (!trainId || isNaN(trainId)) return;
 
     try {
-        const response = await fetch(`/trains/${trainId}/`);
+        const response = await fetch(`/api/trains/${trainId}/`);
         if (!response.ok) throw new Error(await response.text());
 
         currentTrain = await response.json();
+
+        const trip = currentTrain.trips[0] || {};
 
         
         bookingDiv.innerHTML = `
             <div>
               <p>#${currentTrain.number}</p>
               <p>${currentTrain.name} Express</p>
-              <p>Отправление: ${currentTrain.departure} (${currentTrain.from})</p>
-              <p>Прибытие: ${currentTrain.arrive} (${currentTrain.to})</p>
+              <p>Отправление: ${trip.departure || 'N/A'} (${trip.source_name || 'N/A'})</p>
+              <p>Прибытие: ${trip.destination_name || 'N/A'}</p>
             </div>
         `;
 
-        
+       
         const passengerCount = Number(sessionStorage.getItem("passengerCount")) || 1;
         passengersInfo.innerHTML = "";
         for (let i = 0; i < passengerCount; i++) {
             passengersInfo.innerHTML += `
             <div class="passenger">
-                <h4>Pasanger ${i + 1}</h4>
+                <h4>Passenger ${i + 1}</h4>
                 <p>Seat: <span class="number">0</span></p>
                 <input type="text" placeholder="First Name" class="nameInput">
                 <input type="text" placeholder="Last Name" class="lastNameInput">
@@ -60,8 +65,10 @@ async function loadTrain() {
         }
 
         renderWagons();
+
     } catch (err) {
         console.error("Ошибка при загрузке поезда:", err);
+        errorDiv.innerText = "Ошибка при загрузке данных поезда!";
     }
 }
 
@@ -78,7 +85,6 @@ function renderWagons() {
         });
     });
 
-    
     if (currentTrain.vagons.length) renderSeats(currentTrain.vagons[0]);
 }
 
@@ -97,8 +103,10 @@ function renderSeats(wagon) {
 
     wagon.seats.forEach((seat, index) => {
         const seatBtn = document.createElement("button");
-        seatBtn.innerText = seat.number;
-        if (seat.is_occupied) {
+        seatBtn.innerText = seat.seat_number || seat.number;
+
+        
+        if (seat.tickets && seat.tickets.length > 0) {
             seatBtn.disabled = true;
             seatBtn.style.background = "#999";
         } else {
@@ -121,7 +129,7 @@ function addSeatToInvoice(seat) {
     totalPrice += seatPrice;
 
     const row = document.createElement("tr");
-    row.innerHTML = `<td>${seat.number}</td><td>${seatPrice}</td>`;
+    row.innerHTML = `<td>${seat.seat_number || seat.number}</td><td>${seatPrice}</td>`;
     invoiceBody.appendChild(row);
     totalElement.innerText = totalPrice;
 }
@@ -156,33 +164,36 @@ registerBtn.addEventListener("click", async () => {
         const ticketsData = [];
         for (let i = 0; i < selectedSeats.length; i++) {
             ticketsData.push({
-                train: trainId,
+                trip: tripId,
                 seat: selectedSeats[i].id,
-                name: nameInputs[i].value,
-                surname: lastNameInputs[i].value,
-                id_number: privNums[i].value,
+                first_name: nameInputs[i].value,
+                last_name: lastNameInputs[i].value,
+                personal_id: privNums[i].value,
                 price: selectedSeats[i].price || PRICE
             });
         }
 
-        await fetch("/tickets/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": getCSRFToken()
-            },
-            body: JSON.stringify({ tickets: ticketsData })
+        await fetch("/api/tickets/", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": getCSRFToken()
+          },
+          body: JSON.stringify({ 
+              tickets: ticketsData,
+              date: selectedDate
+          })
         });
 
-        alert("Succefull paid!");
+        alert("Tickets successfully booked!");
         window.location.reload();
     } catch (err) {
         console.error("Error:", err);
-        alert("Error while ticket buying!");
+        alert("Error while booking tickets!");
     } finally {
         loader.classList.add("hidden");
     }
 });
 
-// ===== Запуск =====
+
 loadTrain();

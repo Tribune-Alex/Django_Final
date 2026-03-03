@@ -1,10 +1,10 @@
 const trainDiv = document.getElementById("trainTable");
-let popularityData = {};
 
 
-const from = sessionStorage.getItem("fromInputValue"); 
-const to = sessionStorage.getItem("toInputValue");     
-const date = sessionStorage.getItem("selectedDate");   
+const from = sessionStorage.getItem("fromInputValue");
+const to = sessionStorage.getItem("toInputValue");
+const date = sessionStorage.getItem("selectedDate");
+
 
 if (!from || !to || !date) {
     trainDiv.innerHTML = `
@@ -13,11 +13,18 @@ if (!from || !to || !date) {
             <a href='/' data-translate="უკან მთავარზე">Back to main</a>
         </div>
     `;
-} else 
-    fetch(`/departures/?source=${encodeURIComponent(from)}&destination=${encodeURIComponent(to)}&date=${date}`)
-        .then(response => response.json())
+} else {
+    
+    const cleanDate = date.split(':')[0];
+
+    
+    fetch(`/api/departures/?source=${encodeURIComponent(from)}&destination=${encodeURIComponent(to)}&date=${encodeURIComponent(cleanDate)}`)
+        .then(res => {
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            return res.json();
+        })
         .then(trains => {
-            if (!trains || trains.length === 0) {
+            if (!trains.length) {
                 trainDiv.innerHTML = `
                     <div class='error-div'>
                         <h2 data-translate="სასურველი მატარებელი ვერ მოიძებნა">No trains found</h2>
@@ -29,24 +36,41 @@ if (!from || !to || !date) {
 
             let tr = "";
             trains.forEach(train => {
+                const trip = train.trips[0] || {};
+                let totalSeats = 0;
+                let bookedSeats = 0;
+
+                
+                train.vagons.forEach(vagon => {
+                    vagon.seats.forEach(seat => {
+                        totalSeats++;
+                        if (seat.tickets && seat.tickets.length > 0) bookedSeats++;
+                    });
+                });
+
+                const percent = totalSeats > 0 ? Math.round((bookedSeats / totalSeats) * 100) : 0;
+
                 tr += `
                     <tr>
-                      <td>
-                        <p>#${train.number}</p>
-                        <p data-translate="${train.name}">${train.name} Express</p>
-                      </td>
-                      <td>
-                        <p>${train.departure}</p>
-                        <p data-translate="${train.source?.name || 'N/A'}">${train.source?.name || 'N/A'}</p>
-                      </td>
-                      <td>
-                        <p>${train.arrival}</p>
-                        <p data-translate="${train.destination?.name || 'N/A'}">${train.destination?.name || 'N/A'}</p>
-                      </td>
-                      <td>
-                        <button class="btn" data-translate="დაჯავშნა">Book</button>
-                      </td>
-                      <td id="popularity-${train.id}">Loading...</td>
+                        <td>
+                            <p>#${train.number}</p>
+                            <p data-translate="${train.name}">${train.name} Express</p>
+                        </td>
+                        <td>
+                            <p>${trip.departure || 'N/A'}</p>
+                        </td>
+                        <td>
+                            <p>${trip.source_name || 'N/A'} → ${trip.destination_name || 'N/A'}</p>
+                        </td>
+                        <td>
+                            <button class="btn">Book</button>
+                        </td>
+                        <td id="popularity-${train.id}">
+                            <div style="width: 100px; background: #eee; border-radius: 5px; overflow: hidden;">
+                                <div style="width: ${percent}%; background: ${percent > 80 ? "#e74c3c" : percent > 50 ? "#f1c40f" : "#2ecc71"}; height: 12px;"></div>
+                            </div>
+                            <small style="font-size:15px; font-weight:500;">${percent}% <span data-translate="დაჯავშნილია">Occupied</span></small>
+                        </td>
                     </tr>
                 `;
             });
@@ -54,72 +78,23 @@ if (!from || !to || !date) {
             trainDiv.innerHTML = tr;
 
             
-            const btns = document.querySelectorAll(".btn"); 
+            const btns = document.querySelectorAll(".btn");
             btns.forEach((btn, index) => {
-              btn.addEventListener("click", () => {
-                const train = trains[index]; 
-                console.log("Сохраняем поезд:", train.id); 
-                sessionStorage.setItem("selectedTrainId", train.id); 
-                window.location.href = "/booking/"; 
-            });
-         });
-
-            
-            trains.forEach(train => {
-            fetch(`/trains/${train.id}/`)
-            .then(res => {
-            console.log("Status:", res.status);
-            return res.text(); 
-        })
-        .then(data => {
-            console.log("Data:", data);
-
-            
-            let trainDetail;
-            try {
-                trainDetail = JSON.parse(data);
-            } catch (e) {
-                console.error("Not JSON:", e);
-                return; 
-            }
-
-            let booked = 0;
-            let total = 0;
-
-            trainDetail.vagons?.forEach(vagon => {
-                vagon.seats?.forEach(seat => {
-                    total++;
-                    if (seat.is_occupied) booked++;
+                btn.addEventListener("click", () => {
+                    const train = trains[index];
+                    sessionStorage.setItem("selectedTrainId", train.id);
+                    sessionStorage.setItem("selectedDate", cleanDate);
+                    window.location.href = "/booking/";
                 });
             });
-
-            const percent = total > 0 ? Math.round((booked / total) * 100) : 0;
-            popularityData[train.id] = { booked, total, percent };
-
-            const percentCell = document.querySelector(`#popularity-${train.id}`);
-            if (percentCell) {
-                percentCell.innerHTML = `
-                    <div style="width: 100px; background: #eee; border-radius: 5px; overflow: hidden;">
-                        <div style="width: ${percent}%; background: ${percent > 80 ? "#e74c3c" : percent > 50 ? "#f1c40f" : "#2ecc71"}; height: 12px;"></div>
-                    </div>
-                    <small style="font-size:15px; font-weight:500;">${percent}% <span data-translate="დაჯავშნილია">Occupied</span></small>
-                `;
-            }
         })
         .catch(err => {
-            console.error(`Error loading train ${train.id} details:`, err);
-            const percentCell = document.querySelector(`#popularity-${train.id}`);
-            if (percentCell) percentCell.innerHTML = "N/A";
-        });
-});
-
-        })
-        .catch(err => {
+            console.error("Error fetching departures:", err);
             trainDiv.innerHTML = `
                 <div class='error-div'>
-                    <h2 data-translate="შეცდომა">Error</h2>
+                    <h2 data-translate="შეცდომა">Error fetching trains</h2>
                     <a href='/' data-translate="უკან მთავარზე">Back To Main</a>
                 </div>
             `;
-            console.error("Error fetching departures:", err);
         });
+}

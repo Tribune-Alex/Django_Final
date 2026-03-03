@@ -3,45 +3,39 @@ from .models import City, Train, Ticket
 from api.serializers import CitySerializer, TrainSerializer, TicketSerializer
 from django.shortcuts import render
 from datetime import datetime
-
-# -------------------------
-# Обычные Django Views
-# -------------------------
+import uuid
 
 def index(request):
-    """Главная страница"""
+    
     return render(request, 'index.html')
 
 def booking(request):
-    """Страница бронирования билета"""
+    
     return render(request, 'booking.html')
 
 def check_ticket(request):
-    """Страница проверки билета"""
+   
     return render(request, 'checkTicket.html')
 
 def payment_success(request):
-    """Страница успешной оплаты"""
+    
     return render(request, 'paymentSucces.html')
 
 def wanted_trains(request):
-    """Страница со списком поездов по фильтрам"""
+    
     return render(request, 'wantedTrains.html')
 
 
-# -------------------------
-# DRF API Views
-# -------------------------
+
 
 class CityListView(generics.ListAPIView):
-    """Возвращает список всех городов"""
     queryset = City.objects.all()
     serializer_class = CitySerializer
     permission_classes = [permissions.AllowAny]
 
 
 class TrainListView(generics.ListAPIView):
-    """Возвращает список поездов по фильтрам: source, destination, date"""
+    
     serializer_class = TrainSerializer
     permission_classes = [permissions.AllowAny]
 
@@ -65,13 +59,39 @@ class TrainListView(generics.ListAPIView):
 
 
 class TrainDetailView(generics.RetrieveAPIView):
-    """Детальная информация о поезде с вагонами и местами"""
+    
     queryset = Train.objects.all()
     serializer_class = TrainSerializer
     permission_classes = [permissions.AllowAny]
 
 
 class TicketCreateView(generics.CreateAPIView):
-    """Создание билета (только для аутентифицированных пользователей)"""
     serializer_class = TicketSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        data = request.data.copy()
+
+        
+        data['ticket_number'] = str(uuid.uuid4()).replace('-', '')[:12].upper()
+
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+
+        
+        trip = serializer.validated_data['trip']
+        seat = serializer.validated_data['seat']
+        if Ticket.objects.filter(trip=trip, seat=seat).exists():
+            return Response(
+                {"error": "This seat is already taken."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        self.perform_create(serializer)
+        return Response(
+            {
+                "message": "Ticket is booked!",
+                "ticket": serializer.data
+            },
+            status=status.HTTP_201_CREATED
+        )
