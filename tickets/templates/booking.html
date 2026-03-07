@@ -16,7 +16,7 @@
         <a href="{% url 'index' %}"><img class="desktop-icon" src="{% static 'images/HeaderIcon.png' %}" alt="Step Railway icon" /></a>
       </div>
 
-    <div class="added"></div>
+    
     
     <div class="name-div">
       <p data-translate="მგზავრების მონაცემები">მგზავრების მონაცემები</p>
@@ -57,6 +57,8 @@
 
           <div class="passengers-info-div"></div>
         </div>
+
+        <div class="added"></div>
 
         <div class="icons-main">
           <div>
@@ -469,7 +471,9 @@
     </footer>
 
     <script src="{% static 'js/booking.js' %}"></script>
-    
+    <script>
+  const STATIC_URL = "{% static '' %}"; // даёт путь к /static/
+</script>
   </body>
 </html>
 

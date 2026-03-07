@@ -48,6 +48,25 @@
   100% { background-color: rgba(40, 65, 191, 0); }
 }
 
+.icon-img {
+  width: 40px;
+  height: 40px;
+}
+
+.col-md-7 h4 {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.col-md-7 p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.d-flex.align-items-center.gap-2 p {
+  font-size: 14px;
+}
 /* Кнопка поиска */
 .bottom-top__div form button {
   color: #fff;

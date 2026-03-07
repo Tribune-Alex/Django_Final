@@ -70,7 +70,7 @@ async function checkTicket(ticketNumber) {
     ticketinfo.innerHTML = `
       <div class="company-name">
         <p>Step Railway</p>
-        <img src="Images/stepLogo.jpg" alt="Step Logo" />
+        <img src="${STATIC_URL}images/stepLogo.jpg" alt="Step Logo" />
       </div>
 
       <div class="ticket-id-date">

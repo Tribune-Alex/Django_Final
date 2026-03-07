@@ -53,6 +53,50 @@ header {
   color: #ffffff;
 }
 
+.seat-popup {
+  position: fixed;
+  top:0; left:0; right:0; bottom:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background-color: rgba(0,0,0,0.4);
+  z-index: 9999;
+}
+
+.seat-popup-inner {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: repeat(4, 50px);
+  gap: 10px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.seat-popup-inner button {
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.seat-popup-inner button.occupied {
+  background: red;
+  cursor: not-allowed;
+}
+
+.seat-popup-inner button.available {
+  background: #0f0;
+}
+
+.seat-popup-inner button.selected {
+  background: #00f; 
+  color: #fff;
+}
+
 .book-train__div {
   padding-top: 200px;
   display: flex;

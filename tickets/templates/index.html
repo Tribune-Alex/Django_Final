@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="{% static 'css/homestyle.css' %}" />
   <link rel="stylesheet" href="{% static 'css/HeaderFooter.css' %}" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
   
@@ -76,7 +77,9 @@
               მატარებლის მოძებნა
             </button>
           </form>
+          </div>
         </div>
+         </div>
       </div>
     </div>
 
@@ -86,6 +89,49 @@
     </div>
 
   </main>
+  <div class="container my-5">
+  <div class="row align-items-center">
+    
+    <!-- Картинка слева -->
+    <div class="col-md-5 mb-3 mb-md-0">
+      <img
+        src="{% static 'images/homepage_bottom.png' %}"
+        alt="Paris a suitcase and a hat"
+        class="img-fluid rounded"
+      />
+    </div>
+
+    <!-- Контент справа -->
+    <div class="col-md-7">
+      <h4 data-translate="მატარებლის ბილეთები">მატარებლის ბილეთები</h4>
+      <p data-translate="რკინიგზის ბილეთების შესაძენად...">
+        რკინიგზის ბილეთების შესაძენად თქვენ დაგჭირდებათ თითოეული
+        მგზავრის პირადი ნომერი. გთხოვთ მოამზადოთ ეს ინფორმაცია წინასწარ.
+      </p>
+
+      <div class="d-flex flex-wrap gap-3 mt-4">
+        <div class="d-flex align-items-center gap-2">
+          <img src="{% static 'images/icon 1.png' %}" alt="little icon" class="icon-img"/>
+          <p data-translate="შეუზღუდავი შეთავაზებები" class="mb-0">შეუზღუდავი შეთავაზებები</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <img src="{% static 'images/icon 2.png' %}" alt="little icon" class="icon-img"/>
+          <p data-translate="24X7 მხარდაჭერა" class="mb-0">24X7 მხარდაჭერა</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <img src="{% static 'images/icon 3.png' %}" alt="little icon" class="icon-img"/>
+          <p data-translate="100% უსაფრთხო" class="mb-0">100% უსაფრთხო</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <img src="{% static 'images/icon 4.png' %}" alt="little icon" class="icon-img"/>
+          <p data-translate="100% უსაფრთხო გადახდა" class="mb-0">100% უსაფრთხო გადახდა</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+       
 
   
   <footer>

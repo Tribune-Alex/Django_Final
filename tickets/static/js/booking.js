@@ -74,32 +74,63 @@ function chooseSeat() {
     popUp.innerHTML = `
         <div style="position:fixed; left:0; right:0; top:0; bottom:0; display:flex; align-items:center; justify-content:center; background-color: rgba(0,0,0,0.374);">
             <div style="display:flex; gap:20px; padding:20px; border-radius:6px; background-color:white;">
-                <button onclick='getSeats(0)'>I vagon</button>
-                <button onclick='getSeats(1)'>II vagon</button>
-                <button onclick='getSeats(2)'>III vagon</button>
+                <button onclick='getSeats(0)'>
+                    <img src="${STATIC_URL}images/firstWagon.png" alt="First Vagon" style="width:200px; height:auto;" />
+                </button>
+                <button onclick='getSeats(1)'>
+                    <img src="${STATIC_URL}images/midWagon.png" alt="Middle Vagon" style="width:200px; height:auto;" />
+                </button>
+                <button onclick='getSeats(2)'>
+                    <img src="${STATIC_URL}images/lastWagon.png" alt="Last Vagon" style="width:200px; height:auto;" />
+                </button>
             </div>
         </div>
     `;
 }
 
 function getSeats(vagonIndex) {
+    // очищаем старый popup
+    popUp.innerHTML = "";
+
     const chooseTrainsVagon = currentTrain.vagons[vagonIndex];
-    popUp.innerHTML = '';
+
+    // создаём контейнер сетки
+    const seatGrid = document.createElement("div");
+    seatGrid.classList.add("seat-popup-inner");
 
     chooseTrainsVagon.seats.forEach(seat => {
         const btn = document.createElement('button');
-        btn.innerText = seat.id;
+        btn.innerText = seat.seat_number || seat.number;
 
         if (seat.isOccupied) {
+            btn.classList.add("occupied");
             btn.disabled = true;
-            btn.style.backgroundColor = "red";
+        } else {
+            btn.classList.add("available");
+            btn.addEventListener('click', () => addSeatToInvoice(seat, btn));
         }
 
-        btn.addEventListener('click', () => addSeatToInvoice(seat));
-        popUp.appendChild(btn);
+        seatGrid.appendChild(btn);
     });
+
+    // вставляем сетку в popup
+    popUp.appendChild(seatGrid);
+    
+    // показываем затемнённый фон
+    popUp.classList.add("seat-popup");
 }
 
+popUp.addEventListener('click', (e) => {
+    if (e.target === popUp) { // кликнули именно на фон, а не на кнопку
+        popUp.innerHTML = "";
+        popUp.classList.remove("seat-popup");
+    }
+});popUp.addEventListener('click', (e) => {
+    if (e.target === popUp) { // кликнули именно на фон, а не на кнопку
+        popUp.innerHTML = "";
+        popUp.classList.remove("seat-popup");
+    }
+});
 function renderWagons() {
     const wagonButtons = document.querySelectorAll(".vagonImg");
     if (!wagonButtons || wagonButtons.length === 0) return;
