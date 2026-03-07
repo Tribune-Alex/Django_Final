@@ -83,10 +83,10 @@ if (!from || !to || !date) {
             btns.forEach((btn, index) => {
             btn.addEventListener("click", () => {
             const train = trains[index];
-            const trip = train.trips[0];   // берём trip
+            const trip = train.trips[0];
 
             sessionStorage.setItem("selectedTrainId", train.id);
-            sessionStorage.setItem("selectedTripId", trip.id);  // сохраняем tripId
+            sessionStorage.setItem("selectedTripId", trip.id); 
             sessionStorage.setItem("selectedDate", cleanDate);
 
              window.location.href = "/booking/";
