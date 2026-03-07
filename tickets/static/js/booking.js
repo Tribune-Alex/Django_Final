@@ -52,7 +52,6 @@ async function loadTrain() {
             passengersInfo.innerHTML += `
             <div class="passenger">
                 <h4>Passenger ${i + 1}</h4>
-                <p>Seat: <span class="number">0</span></p>
                 <input type="text" placeholder="First Name" class="nameInput">
                 <input type="text" placeholder="Last Name" class="lastNameInput">
                 <input type="text" placeholder="Passport/ID" class="privateNum">
@@ -216,13 +215,13 @@ registerBtn.addEventListener("click", async () => {
 
     for (let i = 0; i < selectedSeats.length; i++) {
         ticketsData.push({
-            train: currentTrain.id,
-            seat: selectedSeats[i].id,
-            first_name: nameInputs[i].value,
-            last_name: lastNameInputs[i].value,
-            personal_id: privNums[i].value,
-            price: selectedSeats[i].price || PRICE
-        });
+         trip: Number(tripId),
+         seat: selectedSeats[i].id,
+         first_name: nameInputs[i].value,
+         last_name: lastNameInputs[i].value,
+         personal_id: privNums[i].value,
+         price: selectedSeats[i].price || PRICE
+      });
     }
 
     

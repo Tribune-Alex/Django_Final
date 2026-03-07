@@ -91,43 +91,24 @@ def departures(request):
     return Response(trains_data, status=status.HTTP_200_OK)
 
 
-@api_view(['POST','GET'])
+@api_view(['POST'])
 def create_tickets(request):
+
     tickets_data = request.data.get("tickets")
-    selected_date_str = request.data.get("date")
 
-    if not tickets_data or not selected_date_str:
-        return Response({"error": "No tickets or date provided"}, status=status.HTTP_400_BAD_REQUEST)
-
-    try:
-        selected_date_obj = datetime.strptime(selected_date_str, "%Y-%m-%d").date()
-    except ValueError:
-        return Response({"error": "Invalid date format"}, status=status.HTTP_400_BAD_REQUEST)
+    if not tickets_data:
+        return Response({"error": "No tickets provided"}, status=400)
 
     created_tickets = []
 
     for t_data in tickets_data:
         try:
-            train = Train.objects.get(id=t_data["train"])
+            trip = Trip.objects.get(id=t_data["trip"])
             seat = Seat.objects.get(id=t_data["seat"])
 
-            
-            trip = Trip.objects.filter(train=train, departure__date=selected_date_obj).first()
-            if not trip:
-                departure_datetime = make_aware(datetime.combine(selected_date_obj, time.min))
-                trip = Trip.objects.create(
-                    train=train,
-                    departure=departure_datetime,
-                    source=train.source,
-                    destination=train.destination
-                )
-
-            
             if Ticket.objects.filter(trip=trip, seat=seat).exists():
-                logger.info(f"Seat {seat.id} already booked for trip {trip.id}")
                 continue
 
-            
             ticket = Ticket.objects.create(
                 trip=trip,
                 seat=seat,
@@ -137,23 +118,23 @@ def create_tickets(request):
                 last_name=t_data.get("last_name"),
                 personal_id=t_data.get("personal_id")
             )
-            created_tickets.append(ticket)
 
             seat.isOccupied = True
             seat.save()
 
-        except Train.DoesNotExist:
-            logger.warning(f"Train {t_data.get('train')} not found")
-            continue
+            created_tickets.append(ticket)
+
+        except Trip.DoesNotExist:
+            return Response({"error": "Trip not found"}, status=404)
+
         except Seat.DoesNotExist:
-            logger.warning(f"Seat {t_data.get('seat')} not found")
-            continue
+            return Response({"error": "Seat not found"}, status=404)
+
         except Exception as e:
-            logger.error(f"Error creating ticket: {e}")
-            continue
+            print(e)
 
     serializer = TicketSerializer(created_tickets, many=True)
-    return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.data, status=201)
 
 @api_view(['GET'])
 def get_ticket(request, ticket_number):

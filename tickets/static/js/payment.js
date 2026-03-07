@@ -64,20 +64,22 @@ myForm.addEventListener("submit", async function (e) {
     return;
   }
 
+  console.log("Tickets data to send:", tickets);
+
   try {
     const resp = await fetch("/api/tickets/", {
-      method: "POST",
-      headers: {
+       method: "POST",
+       headers: {
         "Content-Type": "application/json",
         "X-CSRFToken": getCSRFToken()
       },
       body: JSON.stringify({
-        tickets: tickets,
-        date: selectedDate
-      })
-    });
+      tickets: tickets
+     })
+   });
 
     const data = await resp.json();
+    console.log("Full server response:", JSON.stringify(data, null, 2));
 
 if (!resp.ok) {
   throw new Error(data.error || "Ticket creation error");
@@ -86,15 +88,27 @@ if (!resp.ok) {
 console.log("Tickets created:", data);
 
 
-const ticket = data[0];
+const ticket = data[0]; 
 if (ticket) {
-  sessionStorage.setItem("ticket", JSON.stringify({
-    id: ticket.id || ticket.ticket_number,
-    people: ticket.persons || [],
-    price: ticket.ticketPrice
+  
+  const passengersList = (ticket.persons || ticket.people || ticket.passengers || tickets).map(p => ({
+    name: p.first_name || p.name,
+    surname: p.last_name || p.surname,
+    idNumber: p.personal_id || p.idNumber,
+    seat: { number: p.seat, vagonId: p.vagon || 1 } 
   }));
-  sessionStorage.setItem("theTrain", JSON.stringify(ticket.train || {}));
-  sessionStorage.setItem("total", ticket.ticketPrice || "0");
+
+  
+  const trainInfo = ticket.train || ticket.trainInfo || { departure: "—", arrival: "—" };
+
+  sessionStorage.setItem("ticket", JSON.stringify({
+    id: ticket.id || ticket.ticket_number || Date.now(),
+    people: passengersList,
+    price: ticket.ticketPrice || tickets[0].price
+  }));
+
+  sessionStorage.setItem("theTrain", JSON.stringify(trainInfo));
+  sessionStorage.setItem("total", ticket.ticketPrice || tickets.reduce((sum, t) => sum + parseFloat(t.price), 0));
 }
 
 

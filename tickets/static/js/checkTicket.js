@@ -12,7 +12,7 @@ const ticketEl = document.querySelector(".ticket-info");
 
 async function cancelTicket(ticketNumber) {
   try {
-    const csrftoken = getCookie('csrftoken'); // функция для получения cookie
+    const csrftoken = getCookie('csrftoken');
 
     const res = await fetch(`/api/tickets/${ticketNumber}/cancel/`, {
       method: "DELETE",
@@ -34,7 +34,7 @@ async function cancelTicket(ticketNumber) {
   }
 }
 
-// Получение CSRF токена из cookie
+
 function getCookie(name) {
   let cookieValue = null;
   if (document.cookie && document.cookie !== '') {

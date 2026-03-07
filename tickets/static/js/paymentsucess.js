@@ -1,7 +1,7 @@
 
 const ticket = JSON.parse(sessionStorage.getItem("ticket")) || {};
 const theTrain = JSON.parse(sessionStorage.getItem("theTrain")) || {};
-const passengersInfo = ticket.persons || [];
+const passengersInfo = ticket.people || [];
 const total = sessionStorage.getItem("total") || "0";
 const cardOwner = sessionStorage.getItem("cardOwner") || "";
 const cardNumber = sessionStorage.getItem("cardNum") || "";
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ticketinfo.innerHTML = `
     <div class="company-name">
       <p>Step Railway</p>
-      <img src="Images/stepLogo.jpg" alt="Step Logo" />
+      <img src="${STATIC_URL}images/stepLogo.jpg" alt="Step Logo" />
     </div>
 
     <div class="ticket-id-date">
@@ -45,13 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <div><p>Arrival:</p><p>${theTrain.arrival || ""}</p></div>
     </div>
 
-    <div class="contact-info">
-      <p>Contacts:</p>
-      <div>
-        <p>Email: ${passEmail}</p>
-        <p>Phone: ${passPhoneNum}</p>
-      </div>
-    </div>
+   
 
     <div class="passengers-div">
       <p>Passengers:</p>
@@ -59,10 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
 
     <div class="payment-info">
-      <div class="card-info">
-        <div><p>Card Owner:</p><p>${cardOwner}</p></div>
-        <div><p>Card Number:</p><p>${maskCardNumberWithSpaces(cardNumber)}</p></div>
-      </div>
+      
       <div class="total">
         <p>Total Paid:</p>
         <p>${total}₾</p>
