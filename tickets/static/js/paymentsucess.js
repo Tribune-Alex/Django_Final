@@ -1,8 +1,7 @@
 
 const ticket = JSON.parse(sessionStorage.getItem("ticket")) || {};
-const ticketId = ticket.id || "";
-const passengersInfo = ticket.people || [];
 const theTrain = JSON.parse(sessionStorage.getItem("theTrain")) || {};
+const passengersInfo = ticket.persons || [];
 const total = sessionStorage.getItem("total") || "0";
 const cardOwner = sessionStorage.getItem("cardOwner") || "";
 const cardNumber = sessionStorage.getItem("cardNum") || "";
@@ -10,9 +9,6 @@ const passEmail = sessionStorage.getItem("passEmail") || "";
 const passPhoneNum = sessionStorage.getItem("passPhoneNum") || "";
 const today = new Date();
 const formattedDate = `${today.getMonth() + 1}-${today.getDate()}-${today.getFullYear()}`;
-const georgianDayNumber = sessionStorage.getItem("georgianDayNumber") || "";
-const georgianMonthName = sessionStorage.getItem("georgianMonthName") || "";
-const georgianWeekDay = sessionStorage.getItem("georgianWeekDay") || "";
 
 
 function maskCardNumberWithSpaces(number) {
@@ -24,14 +20,15 @@ function maskCardNumberWithSpaces(number) {
   return masked.replace(/(.{4})/g, "$1 ").trim();
 }
 
+
 document.addEventListener("DOMContentLoaded", () => {
   const ticketinfo = document.querySelector(".ticket-info");
-  if (!ticketId || Object.keys(theTrain).length === 0) {
+
+  if (!ticket.id || Object.keys(theTrain).length === 0) {
     ticketinfo.innerHTML = `<p>Ticket not found</p>`;
     return;
   }
 
-  
   ticketinfo.innerHTML = `
     <div class="company-name">
       <p>Step Railway</p>
@@ -39,14 +36,13 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
 
     <div class="ticket-id-date">
-      <p>Ticket №: ${ticketId}</p>
+      <p>Ticket №: ${ticket.id}</p>
       <p>Date of issue: ${formattedDate}</p>
     </div>
 
     <div class="train-info">
       <div><p>Departure:</p><p>${theTrain.departure || ""}</p></div>
-      <div><p>Arrival:</p><p>${theTrain.arrive || ""}</p></div>
-      <div><p>Departure date:</p><p>${georgianWeekDay} ${georgianDayNumber} ${georgianMonthName}</p></div>
+      <div><p>Arrival:</p><p>${theTrain.arrival || ""}</p></div>
     </div>
 
     <div class="contact-info">
@@ -95,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   });
 
-  
+ 
   const printBtn = document.querySelector(".print");
   const downloadBtn = document.querySelector(".download");
   const ticketEl = document.querySelector(".ticket-info");
@@ -109,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  downloadBtn.addEventListener("click", () => {
+  downloadBtn?.addEventListener("click", () => {
     renderTicketCanvas().then(canvas => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
@@ -121,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  printBtn.addEventListener("click", () => {
+  printBtn?.addEventListener("click", () => {
     const printCanvas = () => {
       const dataUrl = lastCanvas.toDataURL();
       const printWindow = window.open("", "_blank");

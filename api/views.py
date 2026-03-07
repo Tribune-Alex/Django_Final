@@ -158,9 +158,7 @@ def create_tickets(request):
 
 @api_view(['GET'])
 def get_ticket(request, ticket_number):
-    """
-    Возвращает информацию о билете по ticket_number
-    """
+   
     try:
         ticket = Ticket.objects.get(ticket_number=ticket_number)
     except Ticket.DoesNotExist:
@@ -174,6 +172,8 @@ def get_ticket(request, ticket_number):
         "date": ticket.trip.departure.strftime("%Y-%m-%d") if trip else "",
         "ticketPrice": float(ticket.price),
         "train": {
+            "source": trip.source.name if trip else "",
+            "destination": trip.destination.name if trip else "",
             "departure": trip.departure.strftime("%H:%M") if trip else "",
             "arrival": trip.arrival.strftime("%H:%M") if trip else ""
         } if trip else {},
@@ -197,6 +197,9 @@ def get_ticket(request, ticket_number):
 def cancel_ticket(request, ticket_number):
     try:
         ticket = Ticket.objects.get(ticket_number=ticket_number)
+        ticket.seat.isOccupied = False
+        ticket.seat.save()
+        
         ticket.delete()
         return Response({"success": "Ticket canceled"}, status=status.HTTP_200_OK)
     except Ticket.DoesNotExist:

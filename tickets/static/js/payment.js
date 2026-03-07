@@ -79,18 +79,29 @@ myForm.addEventListener("submit", async function (e) {
 
     const data = await resp.json();
 
-    if (!resp.ok) {
-      throw new Error(data.error || "Ticket creation error");
-    }
+if (!resp.ok) {
+  throw new Error(data.error || "Ticket creation error");
+}
 
-    console.log("Tickets created:", data);
+console.log("Tickets created:", data);
 
-   
-    sessionStorage.removeItem("tickets");
-    sessionStorage.removeItem("date");
-    sessionStorage.removeItem("total");
 
-    window.location.href = "/payment_success/";
+const ticket = data[0];
+if (ticket) {
+  sessionStorage.setItem("ticket", JSON.stringify({
+    id: ticket.id || ticket.ticket_number,
+    people: ticket.persons || [],
+    price: ticket.ticketPrice
+  }));
+  sessionStorage.setItem("theTrain", JSON.stringify(ticket.train || {}));
+  sessionStorage.setItem("total", ticket.ticketPrice || "0");
+}
+
+
+sessionStorage.removeItem("tickets");
+sessionStorage.removeItem("date");
+
+window.location.href = "/payment_success/";
 
   } catch (err) {
     console.error(err);

@@ -63,8 +63,8 @@ async function loadTrain() {
         renderWagons();
 
     } catch (err) {
-        console.error("Ошибка при загрузке поезда:", err);
-        errorDiv.innerText = "Ошибка при загрузке данных поезда!";
+        console.error("Train load error:", err);
+        errorDiv.innerText = "Train data load error!";
     }
 }
 

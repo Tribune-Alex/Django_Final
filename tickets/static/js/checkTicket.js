@@ -12,8 +12,17 @@ const ticketEl = document.querySelector(".ticket-info");
 
 async function cancelTicket(ticketNumber) {
   try {
-    const res = await fetch(`/api/tickets/${ticketNumber}/cancel/`, { method: "DELETE" });
+    const csrftoken = getCookie('csrftoken'); // функция для получения cookie
+
+    const res = await fetch(`/api/tickets/${ticketNumber}/cancel/`, {
+      method: "DELETE",
+      headers: {
+        'X-CSRFToken': csrftoken,
+      },
+    });
+
     if (!res.ok) throw new Error("Can't delete ticket");
+
     container.style.display = "none";
     errorDiv.style.display = "flex";
     errorDiv.innerHTML = "<p data-translate='ბილეთი წარმატებით წაიშალა!'>ბილეთი წარმატებით წაიშალა!</p>";
@@ -23,6 +32,22 @@ async function cancelTicket(ticketNumber) {
     errorDiv.innerHTML = `<p>Can't delete ticket</p>`;
     console.error(error);
   }
+}
+
+// Получение CSRF токена из cookie
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      cookie = cookie.trim();
+      if (cookie.startsWith(name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
 }
 
 deleteTicketBtn.addEventListener("click", () => {
@@ -37,6 +62,7 @@ async function checkTicket(ticketNumber) {
     const res = await fetch(`/api/tickets/${ticketNumber}/`);
     if (!res.ok) throw new Error("Ticket not found");
     const data = await res.json();
+    console.log(data);
 
     container.style.display = "flex";
     sessionStorage.setItem("ticketId", data.id);
@@ -53,6 +79,14 @@ async function checkTicket(ticketNumber) {
       </div>
 
       <div class="train-info">
+      <div>
+          <p data-translate="გასვლა">Source:</p>
+          <p>${data.train.source}</p>
+        </div>
+         <div>
+          <p data-translate="გასვლა">Destination:</p>
+          <p>${data.train.destination}</p>
+        </div>
         <div>
           <p data-translate="გასვლა">Departure:</p>
           <p>${data.train.departure}</p>
