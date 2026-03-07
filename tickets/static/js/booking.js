@@ -34,14 +34,14 @@ async function loadTrain() {
 
         currentTrain = await response.json();
 
-        const trip = currentTrain.trips?.[0] || {};
+        const trip = currentTrain.trips?.find(t => t.id == tripId) || {};
 
         bookingDiv.innerHTML = `
             <div>
               <p>#${currentTrain.number}</p>
-              <p>${currentTrain.name} Express</p>
-              <p>Отправление: ${trip.departure || 'N/A'} (${trip.source_name || 'N/A'})</p>
-              <p>Прибытие: ${trip.destination_name || 'N/A'}</p>
+              <p>${currentTrain.name}</p>
+              <p>Source: ${trip.departure || 'N/A'} (${trip.source_name || 'N/A'})</p>
+              <p>Destination: ${trip.destination_name || 'N/A'}</p>
             </div>
         `;
 

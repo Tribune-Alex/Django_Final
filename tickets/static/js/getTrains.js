@@ -79,14 +79,19 @@ if (!from || !to || !date) {
 
             
             const btns = document.querySelectorAll(".btn");
+
             btns.forEach((btn, index) => {
-                btn.addEventListener("click", () => {
-                    const train = trains[index];
-                    sessionStorage.setItem("selectedTrainId", train.id);
-                    sessionStorage.setItem("selectedDate", cleanDate);
-                    window.location.href = "/booking/";
-                });
+            btn.addEventListener("click", () => {
+            const train = trains[index];
+            const trip = train.trips[0];   // берём trip
+
+            sessionStorage.setItem("selectedTrainId", train.id);
+            sessionStorage.setItem("selectedTripId", trip.id);  // сохраняем tripId
+            sessionStorage.setItem("selectedDate", cleanDate);
+
+             window.location.href = "/booking/";
             });
+           });
         })
         .catch(err => {
             console.error("Error fetching departures:", err);
