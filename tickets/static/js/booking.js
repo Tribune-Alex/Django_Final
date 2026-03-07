@@ -89,12 +89,12 @@ function chooseSeat() {
 }
 
 function getSeats(vagonIndex) {
-    // очищаем старый popup
+    
     popUp.innerHTML = "";
 
     const chooseTrainsVagon = currentTrain.vagons[vagonIndex];
 
-    // создаём контейнер сетки
+    
     const seatGrid = document.createElement("div");
     seatGrid.classList.add("seat-popup-inner");
 
@@ -113,20 +113,20 @@ function getSeats(vagonIndex) {
         seatGrid.appendChild(btn);
     });
 
-    // вставляем сетку в popup
+   
     popUp.appendChild(seatGrid);
     
-    // показываем затемнённый фон
+    
     popUp.classList.add("seat-popup");
 }
 
 popUp.addEventListener('click', (e) => {
-    if (e.target === popUp) { // кликнули именно на фон, а не на кнопку
+    if (e.target === popUp) { 
         popUp.innerHTML = "";
         popUp.classList.remove("seat-popup");
     }
 });popUp.addEventListener('click', (e) => {
-    if (e.target === popUp) { // кликнули именно на фон, а не на кнопку
+    if (e.target === popUp) { 
         popUp.innerHTML = "";
         popUp.classList.remove("seat-popup");
     }
