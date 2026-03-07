@@ -43,8 +43,8 @@ if (!from || !to || !date) {
                 
                 train.vagons.forEach(vagon => {
                     vagon.seats.forEach(seat => {
-                        totalSeats++;
-                        if (seat.tickets && seat.tickets.length > 0) bookedSeats++;
+                     totalSeats++;
+                    if (seat.isOccupied) bookedSeats++;
                     });
                 });
 

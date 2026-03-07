@@ -17,6 +17,10 @@ def check_ticket(request):
    
     return render(request, 'checkTicket.html')
 
+def payment_page(request):
+    
+    return render(request, 'payment.html')
+
 def payment_success(request):
     
     return render(request, 'paymentSucces.html')

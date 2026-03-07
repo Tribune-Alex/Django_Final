@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     const date = document.querySelector("#dateInput").value;
+    const count = document.querySelector(".count").value;
 
     if (
       !sessionStorage.getItem("fromInputValue") ||
@@ -67,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     sessionStorage.setItem("selectedDate", date);
+    sessionStorage.setItem('passengerCount', count);
     window.location.href = "/wanted-trains/";
   });
 });

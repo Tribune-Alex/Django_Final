@@ -1,4 +1,3 @@
-
 const seatsContainer = document.getElementById("seats-div");
 const invoiceBody = document.querySelector(".invoice-table-body");
 const totalElement = document.getElementById("total");
@@ -18,15 +17,13 @@ function getCSRFToken() {
         .find(row => row.startsWith('csrftoken='))?.split('=')[1];
 }
 
-
 const trainIdRaw = sessionStorage.getItem("selectedTrainId");
 const trainId = parseInt(trainIdRaw);
+
 const selectedDateRaw = sessionStorage.getItem("selectedDate");
 const selectedDate = selectedDateRaw ? selectedDateRaw.split(':')[0] : null;
 
-
 const tripId = sessionStorage.getItem("selectedTripId"); 
-
 
 async function loadTrain() {
     if (!trainId || isNaN(trainId)) return;
@@ -37,9 +34,8 @@ async function loadTrain() {
 
         currentTrain = await response.json();
 
-        const trip = currentTrain.trips[0] || {};
+        const trip = currentTrain.trips?.[0] || {};
 
-        
         bookingDiv.innerHTML = `
             <div>
               <p>#${currentTrain.number}</p>
@@ -49,9 +45,9 @@ async function loadTrain() {
             </div>
         `;
 
-       
         const passengerCount = Number(sessionStorage.getItem("passengerCount")) || 1;
         passengersInfo.innerHTML = "";
+
         for (let i = 0; i < passengerCount; i++) {
             passengersInfo.innerHTML += `
             <div class="passenger">
@@ -60,7 +56,7 @@ async function loadTrain() {
                 <input type="text" placeholder="First Name" class="nameInput">
                 <input type="text" placeholder="Last Name" class="lastNameInput">
                 <input type="text" placeholder="Passport/ID" class="privateNum">
-                <button class="chooseSeat">Choose Seat</button>
+                <button onclick="chooseSeat()" class="chooseSeat">Choose Seat</button>
             </div>`;
         }
 
@@ -72,6 +68,37 @@ async function loadTrain() {
     }
 }
 
+let popUp = document.querySelector('.added');
+
+function chooseSeat() {
+    popUp.innerHTML = `
+        <div style="position:fixed; left:0; right:0; top:0; bottom:0; display:flex; align-items:center; justify-content:center; background-color: rgba(0,0,0,0.374);">
+            <div style="display:flex; gap:20px; padding:20px; border-radius:6px; background-color:white;">
+                <button onclick='getSeats(0)'>I vagon</button>
+                <button onclick='getSeats(1)'>II vagon</button>
+                <button onclick='getSeats(2)'>III vagon</button>
+            </div>
+        </div>
+    `;
+}
+
+function getSeats(vagonIndex) {
+    const chooseTrainsVagon = currentTrain.vagons[vagonIndex];
+    popUp.innerHTML = '';
+
+    chooseTrainsVagon.seats.forEach(seat => {
+        const btn = document.createElement('button');
+        btn.innerText = seat.id;
+
+        if (seat.isOccupied) {
+            btn.disabled = true;
+            btn.style.backgroundColor = "red";
+        }
+
+        btn.addEventListener('click', () => addSeatToInvoice(seat));
+        popUp.appendChild(btn);
+    });
+}
 
 function renderWagons() {
     const wagonButtons = document.querySelectorAll(".vagonImg");
@@ -87,7 +114,6 @@ function renderWagons() {
 
     if (currentTrain.vagons.length) renderSeats(currentTrain.vagons[0]);
 }
-
 
 function renderSeats(wagon) {
     const rightLeft = document.querySelector(".left-left");
@@ -105,7 +131,6 @@ function renderSeats(wagon) {
         const seatBtn = document.createElement("button");
         seatBtn.innerText = seat.seat_number || seat.number;
 
-        
         if (seat.tickets && seat.tickets.length > 0) {
             seatBtn.disabled = true;
             seatBtn.style.background = "#999";
@@ -120,13 +145,12 @@ function renderSeats(wagon) {
     });
 }
 
-
 function addSeatToInvoice(seat) {
     if (selectedSeats.find(s => s.id === seat.id)) return;
 
     selectedSeats.push(seat);
     const seatPrice = seat.price || PRICE;
-    totalPrice += seatPrice;
+    totalPrice += Number(seatPrice);
 
     const row = document.createElement("tr");
     row.innerHTML = `<td>${seat.seat_number || seat.number}</td><td>${seatPrice}</td>`;
@@ -134,13 +158,11 @@ function addSeatToInvoice(seat) {
     totalElement.innerText = totalPrice;
 }
 
-
 registerBtn.addEventListener("click", async () => {
     const nameInputs = document.getElementsByClassName("nameInput");
     const lastNameInputs = document.getElementsByClassName("lastNameInput");
     const privNums = document.getElementsByClassName("privateNum");
 
-    
     let valid = true;
     for (let i = 0; i < nameInputs.length; i++) {
         if (!nameInputs[i].value || !lastNameInputs[i].value || !privNums[i].value) {
@@ -148,6 +170,7 @@ registerBtn.addEventListener("click", async () => {
             break;
         }
     }
+
     if (!valid) {
         alert("Please fill all forms for passengers!");
         return;
@@ -158,42 +181,23 @@ registerBtn.addEventListener("click", async () => {
         return;
     }
 
-    loader.classList.remove("hidden");
+    const ticketsData = [];
 
-    try {
-        const ticketsData = [];
-        for (let i = 0; i < selectedSeats.length; i++) {
-            ticketsData.push({
-                trip: tripId,
-                seat: selectedSeats[i].id,
-                first_name: nameInputs[i].value,
-                last_name: lastNameInputs[i].value,
-                personal_id: privNums[i].value,
-                price: selectedSeats[i].price || PRICE
-            });
-        }
-
-        await fetch("/api/tickets/", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-              "X-CSRFToken": getCSRFToken()
-          },
-          body: JSON.stringify({ 
-              tickets: ticketsData,
-              date: selectedDate
-          })
+    for (let i = 0; i < selectedSeats.length; i++) {
+        ticketsData.push({
+            train: currentTrain.id,
+            seat: selectedSeats[i].id,
+            first_name: nameInputs[i].value,
+            last_name: lastNameInputs[i].value,
+            personal_id: privNums[i].value,
+            price: selectedSeats[i].price || PRICE
         });
-
-        alert("Tickets successfully booked!");
-        window.location.reload();
-    } catch (err) {
-        console.error("Error:", err);
-        alert("Error while booking tickets!");
-    } finally {
-        loader.classList.add("hidden");
     }
-});
 
+    
+    sessionStorage.setItem("tickets", JSON.stringify(ticketsData));
+    sessionStorage.setItem("date", selectedDate);
+    window.location.href = "/payment/";
+});
 
 loadTrain();

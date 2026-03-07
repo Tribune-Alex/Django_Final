@@ -139,14 +139,14 @@ header {
   flex-direction: column;
   gap: 20px;
 }
-.book-train__div .details-booking > div .passengers-info-div .passengers {
+.book-train__div .details-booking > div .passengers-info-div .passenger {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
 }
-.book-train__div .details-booking > div .passengers-info-div .passengers p {
+.book-train__div .details-booking > div .passengers-info-div .passengers p  {
   background-color: #2841bf;
   padding: 15px 10px;
   border-radius: 5px;
@@ -156,9 +156,11 @@ header {
 .book-train__div .details-booking > div .passengers-info-div .passengers button {
   font-size: 12px;
   padding: 15px 10px;
+ 
 }
 .book-train__div .details-booking > div .passengers-info-div .passengers button::before {
   transition: all 0.5s;
+  
 }
 .book-train__div .details-booking > div .passengers-info-div .passengers button:hover {
   animation: opacity 0.5s;
@@ -167,6 +169,8 @@ header {
   padding: 15px 10px;
   border-radius: 3px;
   border: 1px solid;
+  display: flex;
+  align-items: center;
 }
 .book-train__div .details-booking > div .passengers-info-div .passengers input:nth-child(2), .book-train__div .details-booking > div .passengers-info-div .passengers input:nth-child(3) {
   flex-grow: 1;

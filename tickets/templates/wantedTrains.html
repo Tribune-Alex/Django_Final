@@ -5,14 +5,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>STEP RAILWAY - მატარებლები</title>
-
+  <link rel="stylesheet" href="{% static 'css/HeaderFooter.css' %}" />
   <link rel="stylesheet" href="{% static 'css/homestyle.css' %}">
   <link rel="stylesheet" href="{% static 'css/wantedtrains.css' %}">
 </head>
+
 <body>
   
   <header>
-    <a href="{% url 'index' %}">მთავარი</a>
+    <div class="header-info">
+      <div class="icons">
+        <a href="{% url 'index' %}"><img class="desktop-icon" src="{% static 'images/HeaderIcon.png' %}" alt="Step Railway icon" /></a>
+      </div>
+      <div>
+        
+          <a href="{% url 'check_ticket' %}" class="ticket__button">
+            ბილეთის შემოწმება/დაბრუნება
+          </a>
+        
+      </div>
+    </div>
   </header>
 
   

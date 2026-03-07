@@ -9,73 +9,62 @@ const printBtn = document.querySelector(".print");
 const downloadBtn = document.querySelector(".download");
 const ticketEl = document.querySelector(".ticket-info");
 
-async function cancelTicket(ticketId) {
+
+async function cancelTicket(ticketNumber) {
   try {
-    const res = await fetch(`/api/ticket/${ticketId}/cancel/`, { method: "DELETE" });
-    if (!res.ok) throw new Error("Can't delete");
+    const res = await fetch(`/api/tickets/${ticketNumber}/cancel/`, { method: "DELETE" });
+    if (!res.ok) throw new Error("Can't delete ticket");
     container.style.display = "none";
     errorDiv.style.display = "flex";
-    errorDiv.innerHTML = "<p data-translate='ბილეთი წარმატებით წაიშალა!'>Билет успешно удалён!</p>";
+    errorDiv.innerHTML = "<p data-translate='ბილეთი წარმატებით წაიშალა!'>ბილეთი წარმატებით წაიშალა!</p>";
     console.log("Ticket deleted successfully");
   } catch (error) {
     errorDiv.style.display = "flex";
-    errorDiv.innerHTML = `<p>Can't delete</p>`;
+    errorDiv.innerHTML = `<p>Can't delete ticket</p>`;
     console.error(error);
   }
 }
 
 deleteTicketBtn.addEventListener("click", () => {
-  const ticketId = sessionStorage.getItem("ticketId");
-  if (!ticketId) return alert("Ticket ID not found");
-  cancelTicket(ticketId);
+  const ticketNumber = sessionStorage.getItem("ticketId") || textInput.value.trim();
+  if (!ticketNumber) return alert("Ticket number not found");
+  cancelTicket(ticketNumber);
 });
 
-async function checkTicket(ticketId) {
+
+async function checkTicket(ticketNumber) {
   try {
-    const res = await fetch(`/api/ticket/${ticketId}/checkstatus/`);
-    if (!res.ok) throw new Error("Not Found");
+    const res = await fetch(`/api/tickets/${ticketNumber}/`);
+    if (!res.ok) throw new Error("Ticket not found");
     const data = await res.json();
 
     container.style.display = "flex";
     sessionStorage.setItem("ticketId", data.id);
 
-    
     ticketinfo.innerHTML = `
       <div class="company-name">
         <p>Step Railway</p>
         <img src="Images/stepLogo.jpg" alt="Step Logo" />
       </div>
-      
+
       <div class="ticket-id-date">
-        <p><span data-translate="ბილეთის ნომერი:">Ticker №:</span> ${data.id}</p>
+        <p><span data-translate="ბილეთის ნომერი:">Ticket №:</span> ${data.id}</p>
         <p><span data-translate="გაცემის თარიღი:">Date of issue:</span> ${data.date}</p>
       </div>
-      
+
       <div class="train-info">
         <div>
           <p data-translate="გასვლა">Departure:</p>
           <p>${data.train.departure}</p>
         </div>
         <div>
-          <p data-translate="ჩასვლა">Ariving date:</p>
+          <p data-translate="ჩასვლა">Arrival:</p>
           <p>${data.train.arrival}</p>
-        </div>
-        <div>
-          <p data-translate="გასვლის თარიღი:">Departure date:</p>
-          <p>${data.date}</p>
-        </div>
-      </div>
-      
-      <div class="contact-info">
-        <p data-translate="საკონტაქტო ინფორმაცია">Контакты:</p>
-        <div>
-          <p><span data-translate="იმეილი:">Email:</span> ${data.email}</p>
-          <p><span data-translate="ნომერი">Телефон:</span> ${data.phone}</p>
         </div>
       </div>
 
       <div class="passengers-div">
-        <p data-translate="მგზავრები">Пассажиры:</p>
+        <p data-translate="მგზავრები">Passengers:</p>
         <div class='passengers-info'>
           ${data.persons.map(passenger => `
             <div class="pass-container">
@@ -91,18 +80,9 @@ async function checkTicket(ticketId) {
 
       <div class="payment-info">
         <div class='total'>
-          <p data-translate="სულ გადახდილი:">Итого:</p>
+          <p data-translate="სულ გადახდილი:">Total Paid:</p>
           <p>${data.ticketPrice}₾</p>
         </div>
-      </div>
-
-      <div class="invoice-copyright">
-        <p data-translate="ინვოისი იქმნება კომპიუტერის მიერ და ვალიდურია ბეჭედის და ხელმოწერის გარეშე">
-          
-        </p>
-        <p data-translate="გადმოწერეთ ბილეთი ან შეინახეთ ბილეთის ნომერი ადგილზე წარსადგენად.">
-          
-        </p>
       </div>
     `;
   } catch (error) {
@@ -116,9 +96,9 @@ async function checkTicket(ticketId) {
 
 myForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  const ticketId = textInput.value.trim();
-  if (!ticketId) return alert("Input ticket number");
-  checkTicket(ticketId);
+  const ticketNumber = textInput.value.trim();
+  if (!ticketNumber) return alert("Please enter ticket number");
+  checkTicket(ticketNumber);
 });
 
 
@@ -138,11 +118,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
-    const imgWidth = canvas.width;
-    const imgHeight = canvas.height;
-    const ratio = Math.min(pageWidth / imgWidth, pageHeight / imgHeight);
+    const ratio = Math.min(pageWidth / canvas.width, pageHeight / canvas.height);
+    const imgWidth = canvas.width * ratio;
+    const imgHeight = canvas.height * ratio;
+    const x = (pageWidth - imgWidth) / 2;
+    const y = (pageHeight - imgHeight) / 2;
 
-    pdf.addImage(imgData, "PNG", (pageWidth - imgWidth * ratio)/2, (pageHeight - imgHeight * ratio)/2, imgWidth * ratio, imgHeight * ratio);
+    pdf.addImage(imgData, "PNG", x, y, imgWidth, imgHeight);
     pdf.save("ticket.pdf");
   });
 
@@ -155,8 +137,8 @@ window.addEventListener("DOMContentLoaded", () => {
         <head>
           <title>Print Ticket</title>
           <style>
-            body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
-            img { max-width: 100%; max-height: 100%; }
+            body { margin:0; display:flex; justify-content:center; align-items:center; height:100vh; }
+            img { max-width:100%; max-height:100%; }
           </style>
         </head>
         <body>

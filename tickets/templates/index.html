@@ -13,6 +13,7 @@
 </head>
 <body>
   
+  
   <header id="header">
     <div class="header-info">
       <div class="icons">
@@ -20,53 +21,57 @@
           <img class="desktop-icon" src="{% static 'images/HeaderIcon.png' %}" alt="Step Railway icon" />
         </a>
       </div>
-
       <div>
-        <button>
-          <a href="{% url 'check_ticket' %}" class="check-ticket__button" data-translate="ბილეთის შემოწმება/დაბრუნება">
+        
+          <a href="{% url 'check_ticket' %}" class="ticket__button">
             ბილეთის შემოწმება/დაბრუნება
           </a>
-        </button>
+        
       </div>
     </div>
   </header>
 
+  
   <main class="main">
+
+    
     <div class="top-div">
-      <div class="text-div__top">
+      <div class="top-div__info text-div__top">
         <h4 data-translate="შეიძინეთ მატარებლის ბილეთები ონლაინ">შეიძინეთ მატარებლის ბილეთები ონლაინ</h4>
         <p data-translate="გისურვებთ ბედნიერ მგზავრობას">გისურვებთ ბედნიერ მგზავრობას</p>
       </div>
     </div>
 
+    
     <div class="bottom-div">
       <div class="bottom-top__div">
         <h4 data-translate="დაჯავშნეთ მატარებლის ბილეთი">დაჯავშნეთ მატარებლის ბილეთი</h4>
         <div class="inputs">
           <form id="myForm">
-            <!-- FROM INPUT -->
+
+            
             <div class="input-from">
               <input type="text" class="from" placeholder="საიდან" readonly required />
               <ul class="from-ul"></ul>
             </div>
 
-            <!-- TO INPUT -->
+            
             <div class="input-to">
               <input type="text" class="to" placeholder="სად" readonly required />
               <ul class="to-ul"></ul>
             </div>
 
-            <!-- DATE INPUT -->
+            
             <div class="input-date big-input">
               <input type="text" class="date" id="dateInput" placeholder="გამგზავრების თარიღი" required />
             </div>
 
-            <!-- PASSENGER COUNT -->
+            
             <div class="passenger-count big-input">
               <input type="number" min="1" max="120" class="count" placeholder="მგზავრების რაოდენობა" required />
             </div>
 
-            <!-- SUBMIT BUTTON -->
+            
             <button type="submit" class="search-train" data-translate="მატარებლის მოძებნა">
               მატარებლის მოძებნა
             </button>
@@ -74,8 +79,15 @@
         </div>
       </div>
     </div>
+
+    
+    <div class="ticket-info" id="ticketInfo">
+      
+    </div>
+
   </main>
 
+  
   <footer>
     <div class="footer-txt-div">
       <p>© 2023 <a href="https://railway.stepprojects.ge/" target="_blank">Step Railway</a>. 
@@ -83,8 +95,9 @@
     </div>
   </footer>
 
-  <!-- SCRIPTS -->
+  
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="{% static 'js/script.js' %}"></script>
+  
 </body>
 </html>

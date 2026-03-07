@@ -2,10 +2,15 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from tickets.models import City, Train, Trip, Seat, Ticket
-from .serializers import CitySerializer, TrainSerializer, TicketSerializer
+from .serializers import CitySerializer, TrainSerializer, TicketSerializer,TripSerializer
 from django.utils.dateparse import parse_date
 from django.utils.timezone import make_aware
-import datetime
+from datetime import datetime, time
+from django.utils.timezone import make_aware
+import uuid
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 @api_view(['GET'])
@@ -35,7 +40,6 @@ def train_list(request):
     return Response(serializer.data)
 
 
-
 @api_view(['GET'])
 def departures(request):
     source_id = request.GET.get('source')
@@ -49,33 +53,58 @@ def departures(request):
     if not selected_date:
         return Response({"error": "Invalid date format"}, status=status.HTTP_400_BAD_REQUEST)
 
-    start_datetime = make_aware(datetime.datetime.combine(selected_date, datetime.time.min))
-    end_datetime = make_aware(datetime.datetime.combine(selected_date, datetime.time.max))
+    
+    start_datetime = make_aware(datetime.combine(selected_date, time.min))
+    end_datetime = make_aware(datetime.combine(selected_date, time.max))
 
+    
     trips = Trip.objects.filter(
         source_id=source_id,
         destination_id=destination_id,
         departure__range=(start_datetime, end_datetime)
-    )
+    ).select_related('train').prefetch_related('train__vagons', 'train__vagons__seats')
 
     if not trips.exists():
         return Response([], status=status.HTTP_200_OK)
 
-    trains = [trip.train for trip in trips]
-    serializer = TrainSerializer(trains, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    trains_data = []
+    added_train_ids = set()
+    for trip in trips:
+        train = trip.train
+        if train.id in added_train_ids:
+            
+            for td in trains_data:
+                if td['id'] == train.id:
+                    td['trips'].append(TripSerializer(trip).data)
+                    break
+        else:
+            train_data = {
+                'id': train.id,
+                'number': train.number,
+                'name': train.name,
+                'vagons': [], 
+                'trips': [TripSerializer(trip).data],
+            }
+            trains_data.append(train_data)
+            added_train_ids.add(train.id)
+
+    return Response(trains_data, status=status.HTTP_200_OK)
 
 
-
-@api_view(['POST'])
+@api_view(['POST','GET'])
 def create_tickets(request):
     tickets_data = request.data.get("tickets")
-    selected_date_str = request.data.get("date")  
+    selected_date_str = request.data.get("date")
 
     if not tickets_data or not selected_date_str:
         return Response({"error": "No tickets or date provided"}, status=status.HTTP_400_BAD_REQUEST)
 
-    selected_date = parse_date(selected_date_str)
+    try:
+        selected_date_obj = datetime.strptime(selected_date_str, "%Y-%m-%d").date()
+    except ValueError:
+        return Response({"error": "Invalid date format"}, status=status.HTTP_400_BAD_REQUEST)
+
     created_tickets = []
 
     for t_data in tickets_data:
@@ -83,34 +112,85 @@ def create_tickets(request):
             train = Train.objects.get(id=t_data["train"])
             seat = Seat.objects.get(id=t_data["seat"])
 
-            trip, created = Trip.objects.get_or_create(
-                train=train,
-                departure=selected_date,
-                defaults={
-                    "source": train.source,
-                    "destination": train.destination,
-                }
-            )
+            
+            trip = Trip.objects.filter(train=train, departure__date=selected_date_obj).first()
+            if not trip:
+                departure_datetime = make_aware(datetime.combine(selected_date_obj, time.min))
+                trip = Trip.objects.create(
+                    train=train,
+                    departure=departure_datetime,
+                    source=train.source,
+                    destination=train.destination
+                )
 
+            
             if Ticket.objects.filter(trip=trip, seat=seat).exists():
-                continue  # Место уже занято, пропускаем
+                logger.info(f"Seat {seat.id} already booked for trip {trip.id}")
+                continue
 
+            
             ticket = Ticket.objects.create(
                 trip=trip,
                 seat=seat,
-                ticket_number=f"{seat.id}-{trip.id}",
-                price=t_data.get("price", seat.price)
+                ticket_number=str(uuid.uuid4())[:8],
+                price=t_data.get("price", seat.price),
+                first_name=t_data.get("first_name"),
+                last_name=t_data.get("last_name"),
+                personal_id=t_data.get("personal_id")
             )
             created_tickets.append(ticket)
 
+            seat.isOccupied = True
+            seat.save()
+
         except Train.DoesNotExist:
+            logger.warning(f"Train {t_data.get('train')} not found")
             continue
         except Seat.DoesNotExist:
+            logger.warning(f"Seat {t_data.get('seat')} not found")
+            continue
+        except Exception as e:
+            logger.error(f"Error creating ticket: {e}")
             continue
 
     serializer = TicketSerializer(created_tickets, many=True)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+@api_view(['GET'])
+def get_ticket(request, ticket_number):
+    """
+    Возвращает информацию о билете по ticket_number
+    """
+    try:
+        ticket = Ticket.objects.get(ticket_number=ticket_number)
+    except Ticket.DoesNotExist:
+        return Response({"error": "Ticket not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    trip = ticket.trip
+    train = trip.train if trip else None
+
+    ticket_data = {
+        "id": ticket.ticket_number,
+        "date": ticket.trip.departure.strftime("%Y-%m-%d") if trip else "",
+        "ticketPrice": float(ticket.price),
+        "train": {
+            "departure": trip.departure.strftime("%H:%M") if trip else "",
+            "arrival": trip.arrival.strftime("%H:%M") if trip else ""
+        } if trip else {},
+        "persons": [
+            {
+                "name": ticket.first_name,
+                "surname": ticket.last_name,
+                "idNumber": ticket.personal_id,
+                "seat": {
+                    "number": ticket.seat.seat_number,
+                    "vagonId": ticket.seat.vagon.id
+                }
+            }
+        ]
+    }
+
+    return Response(ticket_data, status=status.HTTP_200_OK)
 
 
 @api_view(['DELETE'])

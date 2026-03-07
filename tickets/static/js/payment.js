@@ -1,11 +1,26 @@
 const myForm = document.querySelector(".payment-info");
+function getCSRFToken() {
+  const name = "csrftoken";
+  const cookies = document.cookie.split(";");
+
+  for (let cookie of cookies) {
+    cookie = cookie.trim();
+    if (cookie.startsWith(name + "=")) {
+      return cookie.substring(name.length + 1);
+    }
+  }
+  return "";
+}
 const cardOwner = document.getElementById("cardOwner");
 const cardNum = document.getElementById("cardNum");
 const cardCvv = document.getElementById("cardCvv");
 const cardDate = document.getElementById("cardDate");
 
-const newTicket = JSON.parse(sessionStorage.getItem("ticket"));
-console.log("Ticket from session:", newTicket);
+const tickets = JSON.parse(sessionStorage.getItem("tickets"));
+const selectedDate = sessionStorage.getItem("date");
+
+console.log("tickets:", tickets);
+console.log("date:", selectedDate);
 
 
 cardNum.addEventListener("input", (e) => {
@@ -22,7 +37,7 @@ cardDate.addEventListener("input", (e) => {
 });
 
 
-myForm.addEventListener("submit", function (e) {
+myForm.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const dateRegex = /^(0[1-9]|1[0-2])\/\d{4}$/;
@@ -32,7 +47,6 @@ myForm.addEventListener("submit", function (e) {
   const cardOwnerName = cardOwner.value.trim();
   const cardDateValue = cardDate.value.trim();
 
-  
   if (
     cardNumber.length !== 16 ||
     isNaN(cardNumber) ||
@@ -41,22 +55,50 @@ myForm.addEventListener("submit", function (e) {
     cardOwnerName === "" ||
     !dateRegex.test(cardDateValue)
   ) {
-    alert("ყველა ველი აუცილებლად სწორად უნდა შეივსოს!"); 
+    alert("ყველა ველი აუცილებლად სწორად უნდა შეივსოს!");
     return;
   }
 
-  
-  sessionStorage.setItem("cardNum", cardNumber);
-  sessionStorage.setItem("cardOwner", cardOwnerName);
-  sessionStorage.setItem("cardCVV", cardCVV);
-  sessionStorage.setItem("cardDate", cardDateValue);
+  if (!tickets || !selectedDate) {
+    alert("Ticket information missing!");
+    return;
+  }
 
-  
-  window.location.href = "paymentSucces.html";
+  try {
+    const resp = await fetch("/api/tickets/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCSRFToken()
+      },
+      body: JSON.stringify({
+        tickets: tickets,
+        date: selectedDate
+      })
+    });
+
+    const data = await resp.json();
+
+    if (!resp.ok) {
+      throw new Error(data.error || "Ticket creation error");
+    }
+
+    console.log("Tickets created:", data);
+
+   
+    sessionStorage.removeItem("tickets");
+    sessionStorage.removeItem("date");
+    sessionStorage.removeItem("total");
+
+    window.location.href = "/payment_success/";
+
+  } catch (err) {
+    console.error(err);
+    alert("Payment succeeded but ticket creation failed!");
+  }
 });
 
 
 const total = document.getElementById("mustPay");
 const totalFromInvoice = sessionStorage.getItem("total") || "0";
 total.innerHTML = `${totalFromInvoice}.00₾`;
-

@@ -11,7 +11,7 @@ class SeatSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Seat
-        fields = ['id', 'seat_number', 'price', 'tickets']
+        fields = ['id', 'seat_number', 'price', 'tickets','isOccupied']
 
 class VagonSerializer(serializers.ModelSerializer):
     seats = SeatSerializer(many=True, read_only=True)
@@ -38,4 +38,4 @@ class TrainSerializer(serializers.ModelSerializer):
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        fields = ['id', 'ticket_number', 'trip', 'seat', 'price', 'booked_at']
+        fields = '__all__'

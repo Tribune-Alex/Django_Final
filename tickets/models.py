@@ -41,6 +41,8 @@ class Seat(models.Model):
     vagon = models.ForeignKey(Vagon, related_name='seats', on_delete=models.CASCADE)
     seat_number = models.CharField(max_length=5)
     price = models.DecimalField(max_digits=8, decimal_places=2, default=1200)
+    isOccupied = models.BooleanField(default=False)
+    
 
     def __str__(self):
         return f"Seat {self.seat_number} in {self.vagon}"
