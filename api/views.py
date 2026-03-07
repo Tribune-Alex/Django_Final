@@ -6,7 +6,6 @@ from .serializers import CitySerializer, TrainSerializer, TicketSerializer,TripS
 from django.utils.dateparse import parse_date
 from django.utils.timezone import make_aware
 from datetime import datetime, time
-from django.utils.timezone import make_aware
 import uuid
 import logging
 
