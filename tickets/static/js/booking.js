@@ -212,22 +212,51 @@ registerBtn.addEventListener("click", async () => {
     }
 
     const ticketsData = [];
-
     for (let i = 0; i < selectedSeats.length; i++) {
         ticketsData.push({
-         trip: Number(tripId),
-         seat: selectedSeats[i].id,
-         first_name: nameInputs[i].value,
-         last_name: lastNameInputs[i].value,
-         personal_id: privNums[i].value,
-         price: selectedSeats[i].price || PRICE
-      });
+            trip: Number(tripId),
+            seat: selectedSeats[i].id,
+            first_name: nameInputs[i].value,
+            last_name: lastNameInputs[i].value,
+            personal_id: privNums[i].value,
+            price: selectedSeats[i].price || PRICE
+        });
     }
 
-    
-    sessionStorage.setItem("tickets", JSON.stringify(ticketsData));
-    sessionStorage.setItem("date", selectedDate);
-    window.location.href = "/payment/";
+    try {
+        
+        const res = await fetch('/api/tickets/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
+            },
+            body: JSON.stringify({ tickets: ticketsData })
+        });
+
+        if (!res.ok) throw new Error("Tickets creation failed");
+
+        
+        const createdTickets = await res.json();
+
+        if (createdTickets.length === 0) {
+            alert("Tickets were not created!");
+            return;
+        }
+
+        
+        sessionStorage.setItem("ticketId", createdTickets[0].ticket_number);
+        sessionStorage.setItem("tickets", JSON.stringify(ticketsData));
+        sessionStorage.setItem("date", selectedDate);
+        sessionStorage.setItem("total", totalPrice);
+
+        
+        window.location.href = "/payment/";
+
+    } catch (err) {
+        console.error(err);
+        alert("Error creating tickets!");
+    }
 });
 
 loadTrain();

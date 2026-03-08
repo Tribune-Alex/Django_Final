@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from tickets.models import City, Train, Trip, Seat, Ticket
-from .serializers import CitySerializer, TrainSerializer, TicketSerializer,TripSerializer
+from .serializers import CitySerializer, TrainSerializer, TicketSerializer,TripSerializer,VagonSerializer
 from django.utils.dateparse import parse_date
 from django.utils.timezone import make_aware
 from datetime import datetime, time
@@ -49,43 +49,45 @@ def departures(request):
     if not selected_date:
         return Response({"error": "Invalid date format"}, status=status.HTTP_400_BAD_REQUEST)
 
-    
     start_datetime = make_aware(datetime.combine(selected_date, time.min))
     end_datetime = make_aware(datetime.combine(selected_date, time.max))
 
-    
     trips = Trip.objects.filter(
         source_id=source_id,
         destination_id=destination_id,
         departure__range=(start_datetime, end_datetime)
     ).select_related('train').prefetch_related('train__vagons', 'train__vagons__seats')
 
-    if not trips.exists():
-        return Response([], status=status.HTTP_200_OK)
-
-    
     trains_data = []
     added_train_ids = set()
+
     for trip in trips:
         train = trip.train
+
+        
         if train.id in added_train_ids:
-            
             for td in trains_data:
                 if td['id'] == train.id:
                     td['trips'].append(TripSerializer(trip).data)
                     break
         else:
+            
             train_data = {
                 'id': train.id,
                 'number': train.number,
                 'name': train.name,
-                'vagons': [], 
+                'vagons': VagonSerializer(
+                    train.vagons.all(),
+                    many=True,
+                    context={'trip_id': trip.id}
+                ).data,
                 'trips': [TripSerializer(trip).data],
             }
             trains_data.append(train_data)
             added_train_ids.add(train.id)
 
     return Response(trains_data, status=status.HTTP_200_OK)
+
 
 
 @api_view(['POST'])

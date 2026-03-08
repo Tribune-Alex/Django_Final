@@ -5,7 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const toUl = document.querySelector(".to-ul");
   const form = document.getElementById("myForm");
 
-  flatpickr("#dateInput", { dateFormat: "Y-m-d" });
+  flatpickr("#dateInput", { 
+  dateFormat: "Y-m-d",
+  minDate: "today"
+});
 
   fetch("/api/city/")
     .then(res => {

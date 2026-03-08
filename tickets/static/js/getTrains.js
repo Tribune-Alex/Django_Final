@@ -1,10 +1,8 @@
 const trainDiv = document.getElementById("trainTable");
 
-
 const from = sessionStorage.getItem("fromInputValue");
 const to = sessionStorage.getItem("toInputValue");
 const date = sessionStorage.getItem("selectedDate");
-
 
 if (!from || !to || !date) {
     trainDiv.innerHTML = `
@@ -14,10 +12,8 @@ if (!from || !to || !date) {
         </div>
     `;
 } else {
-    
     const cleanDate = date.split(':')[0];
 
-    
     fetch(`/api/departures/?source=${encodeURIComponent(from)}&destination=${encodeURIComponent(to)}&date=${encodeURIComponent(cleanDate)}`)
         .then(res => {
             if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
@@ -43,8 +39,8 @@ if (!from || !to || !date) {
                 
                 train.vagons.forEach(vagon => {
                     vagon.seats.forEach(seat => {
-                     totalSeats++;
-                    if (seat.isOccupied) bookedSeats++;
+                        totalSeats++;
+                        if (seat.isOccupied) bookedSeats++;
                     });
                 });
 
@@ -79,19 +75,18 @@ if (!from || !to || !date) {
 
             
             const btns = document.querySelectorAll(".btn");
-
             btns.forEach((btn, index) => {
-            btn.addEventListener("click", () => {
-            const train = trains[index];
-            const trip = train.trips[0];
+                btn.addEventListener("click", () => {
+                    const train = trains[index];
+                    const trip = train.trips[0];
 
-            sessionStorage.setItem("selectedTrainId", train.id);
-            sessionStorage.setItem("selectedTripId", trip.id); 
-            sessionStorage.setItem("selectedDate", cleanDate);
+                    sessionStorage.setItem("selectedTrainId", train.id);
+                    sessionStorage.setItem("selectedTripId", trip.id);
+                    sessionStorage.setItem("selectedDate", cleanDate);
 
-             window.location.href = "/booking/";
+                    window.location.href = "/booking/";
+                });
             });
-           });
         })
         .catch(err => {
             console.error("Error fetching departures:", err);
