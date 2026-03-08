@@ -29,7 +29,7 @@ async function loadTrain() {
     if (!trainId || isNaN(trainId)) return;
 
     try {
-        const response = await fetch(`/api/trains/${trainId}/`);
+        const response = await fetch(`/api/trains/${trainId}/?trip=${tripId}`);
         if (!response.ok) throw new Error(await response.text());
 
         currentTrain = await response.json();

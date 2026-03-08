@@ -22,12 +22,9 @@ def city_list(request):
 
 @api_view(['GET'])
 def train_detail(request, pk):
-    try:
-        train = Train.objects.get(pk=pk)
-    except Train.DoesNotExist:
-        return Response({"error": "Train not found"}, status=status.HTTP_404_NOT_FOUND)
-    
-    serializer = TrainSerializer(train)
+    train = Train.objects.get(pk=pk)
+    trip_id = request.GET.get("trip") 
+    serializer = TrainSerializer(train, context={"trip_id": trip_id})
     return Response(serializer.data)
 
 

@@ -7,18 +7,29 @@ class CitySerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 class SeatSerializer(serializers.ModelSerializer):
-    tickets = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    isOccupied = serializers.SerializerMethodField()
 
     class Meta:
         model = Seat
-        fields = ['id', 'seat_number', 'price', 'tickets','isOccupied']
+        fields = ['id', 'seat_number', 'price', 'isOccupied']
+
+    def get_isOccupied(self, obj):
+        trip_id = self.context.get("trip_id")
+        if not trip_id:
+            return False
+        return Ticket.objects.filter(trip_id=trip_id, seat=obj).exists()
 
 class VagonSerializer(serializers.ModelSerializer):
-    seats = SeatSerializer(many=True, read_only=True)
+    seats = serializers.SerializerMethodField()
 
     class Meta:
         model = Vagon
         fields = ['id', 'number', 'seats']
+
+    def get_seats(self, obj):
+        seats = obj.seats.all()
+        serializer = SeatSerializer(seats, many=True, context=self.context)
+        return serializer.data
 
 class TripSerializer(serializers.ModelSerializer):
     source_name = serializers.CharField(source='source.name', read_only=True)
